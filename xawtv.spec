@@ -8,8 +8,8 @@ Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
 Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
-Version:	3.81
-Release:	2
+Version:	3.82
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
@@ -21,7 +21,6 @@ Source5:	http://bytesex.org/xawtv/tv-fonts-1.0.tar.bz2
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-channels_list-cable_poland_PTK.patch
 Patch2:		%{name}-fullscreen.patch
-#Patch1:		%{name}-newkeys-radio.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	libjpeg-devel
@@ -166,6 +165,7 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 %configure \
 %{!?_without_lirc:	--enable-lirc} \
 %{?_without_lirc:	--disable-lirc} \
+	--enable-motif \
 	--disable-quicktime \
 	--enable-xfree-ext \
 	--enable-xvideo 
