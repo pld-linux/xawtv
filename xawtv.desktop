@@ -3,7 +3,6 @@ Name=XawTV
 Comment=TV Tuner Program
 Comment[pl]=Program obsługujący tuner TV
 Exec=xawtv
-Icon=xawtv.png
 Terminal=false
 Type=Application
 Encoding=UTF-8
