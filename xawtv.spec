@@ -8,7 +8,7 @@ Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
 Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
-Version:	3.86
+Version:	3.88
 Release:	1
 License:	GPL
 Group:		X11/Applications
