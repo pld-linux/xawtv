@@ -4,7 +4,7 @@ Comment=TV Tuner Program (with XVideo disabled --- allows capture).
 Comment[pl]=Program obsługujący tuner TV (z wyłączonym XVideo --- umożliwia to przechwytywanie obrazu).
 Exec=xawtv -noxv
 Icon=xawtv.png
-Terminal=0
+Terminal=false
 Type=Application
 Encoding=UTF-8
 # vi: encoding=utf-8:termencoding=iso-8859-2
