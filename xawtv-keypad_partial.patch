@@ -1,0 +1,74 @@
+diff -Nur xawtv-3.56.orig/man/xawtvrc.5 xawtv-3.56/man/xawtvrc.5
+--- xawtv-3.56.orig/man/xawtvrc.5	Sun Jul 15 12:39:22 2001
++++ xawtv-3.56/man/xawtvrc.5	Tue Jul 24 17:55:00 2001
+@@ -162,6 +162,11 @@
+ sets work).  Otherwise they are interpreted as programmed station,
+ i.e. 1 is the first station from $HOME/.xawtv, ...
+ .TP
++.B keypad-partial = on | off
++Another configuration of keypad mode.  Default is on.  When set to off,
++typing one digit on the keypad doesn't change the station number when
++there are two-digit station numbers starting with that digit.
++.TP
+ .B osd = on | off
+ Enable/disable the onscreen display in fullscreen mode.  Default is
+ on.
+diff -Nur xawtv-3.56.orig/src/channel.c xawtv-3.56/src/channel.c
+--- xawtv-3.56.orig/src/channel.c	Tue Jul 24 17:10:52 2001
++++ xawtv-3.56/src/channel.c	Tue Jul 24 17:38:01 2001
+@@ -71,6 +71,7 @@
+ int have_config;
+ int jpeg_quality = 75;
+ int keypad_ntsc = 0;
++int keypad_partial = 1;
+ int use_osd = 1;
+ int fs_width,fs_height,fs_xoff,fs_yoff;
+ int pix_width=128, pix_height=96, pix_cols=1;
+@@ -435,6 +436,9 @@
+     if (NULL != (val = cfg_get_str("global","keypad-ntsc")))
+ 	if (-1 != (i = str_to_int(val,booltab)))
+ 	    keypad_ntsc = i;
++    if (NULL != (val = cfg_get_str("global","keypad-partial")))
++	if (-1 != (i = str_to_int(val,booltab)))
++	    keypad_partial = i;
+     if (NULL != (val = cfg_get_str("global","osd")))
+ 	if (-1 != (i = str_to_int(val,booltab)))
+ 	    use_osd = i;
+diff -Nur xawtv-3.56.orig/src/channel.h xawtv-3.56/src/channel.h
+--- xawtv-3.56.orig/src/channel.h	Thu May 17 12:36:02 2001
++++ xawtv-3.56/src/channel.h	Tue Jul 24 17:38:20 2001
+@@ -36,6 +36,7 @@
+ extern int have_config;
+ extern int jpeg_quality;
+ extern int keypad_ntsc;
++extern int keypad_partial;
+ extern int use_osd;
+ extern int fs_width,fs_height,fs_xoff,fs_yoff;
+ extern int pix_width,pix_height,pix_cols;
+diff -Nur xawtv-3.56.orig/src/commands.c xawtv-3.56/src/commands.c
+--- xawtv-3.56.orig/src/commands.c	Fri Jul 13 21:06:24 2001
++++ xawtv-3.56/src/commands.c	Tue Jul 24 17:36:49 2001
+@@ -1019,7 +1019,8 @@
+     if (debug)
+ 	fprintf(stderr,"keypad: key %d\n",n);
+     if (-1 == keypad_state) {
+-	if (n > 0 && n <= (keypad_ntsc ? 99 : count)) {
++	if (n > 0 && n <= (keypad_ntsc ? 99 : count) &&
++	    (keypad_partial || n*10 > (keypad_ntsc ? 99 : count))) {
+ 	    if (keypad_ntsc) {
+ 		sprintf(ch,"%d",n);
+ 		do_va_cmd(2,"setchannel",ch,NULL);
+@@ -1060,5 +1060,13 @@
+ 	fprintf(stderr,"keypad: timeout\n");
+     if (keypad_state == cur_sender+1)
+ 	set_title();
++    else if (keypad_state > 0) {
++	if (keypad_ntsc) {
++	    char ch[8];
++	    sprintf(ch,"%d",keypad_state);
++	    do_va_cmd(2,"setchannel",keypad_state,NULL);
++	} else
++	    do_va_cmd(2,"setstation",channels[keypad_state-1]->name,NULL);
++    }
+     keypad_state = -1;
+ }
