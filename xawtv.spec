@@ -5,6 +5,8 @@ Summary:	Video4Linux Stream Capture Viewer
 Summary(es):	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
+Summary(ru):	Просмотр и запись видеопотоков
+Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
 Version:	3.74
 Release:	1
@@ -53,6 +55,26 @@ Uma coleГЦo de ferramentas para o video4linux:
 - streamer - ferramenta e captura (imagens / filmes)
 - v4lctl - ferramenta de linha de comando para controlar dispositivos
   v4l
+
+%description -l ru
+Набор инструментов для работы с видеопотоками по протоколу
+video4linux:
+ - xawtv - интерфейс под X11
+ - fbtv - консольный интерфейс
+ - streamer - инструмент для записи (изображение/фильм)
+ - v4lctl - инструмент командной строки для управления v4l устройствами
+
+Включает также основанную на ncurses программу работы с радио.
+
+%description -l uk
+Наб╕р ╕нструмент╕в для роботи з в╕деопотоками по протоколу
+video4linux:
+ - xawtv - ╕нтерфейс п╕д X11
+ - fbtv - консольний ╕нтерфейс
+ - streamer - ╕нструмент для запису (зображення/ф╕льм)
+ - v4lctl - ╕нструмент командного рядка для управл╕ння v4l пристроями
+
+Включа╓ також основану на ncurses програму роботи з рад╕о.
 
 %package radio
 Summary:	radio
@@ -162,7 +184,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE4} .
 
-mv $RPM_BUILD_ROOT{%{_bindir},/usr/bin}/alevtd 
+mv $RPM_BUILD_ROOT{%{_bindir},/usr/bin}/alevtd
 
 gzip -9nf Changes README* xawtv-conf_example-*
 
