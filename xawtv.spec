@@ -92,7 +92,7 @@ Daemon HTTP dla dekodera teletekstu alevt
 %patch0 -p1
 
 %build
-CPPFLAGS="-I/usr/include/ncurses"
+CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 %configure \
 	--enable-lirc
 %{__make}
