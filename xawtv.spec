@@ -10,11 +10,6 @@ Version:	3.68
 Release:	1
 License:	GPL
 Group:		X11/Applications
-Group(de):	X11/Applikationen
-Group(es):	X11/Aplicaciones
-Group(pl):	X11/Aplikacje
-Group(pt_BR):	X11/Aplicações
-Group(pt):	X11/Aplicações
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
@@ -65,10 +60,6 @@ Summary(es):	xawtv: radio
 Summary(pl):	radio
 Summary(pt_BR):	Suporte a rádio no xawtv
 Group:		Applications/Sound
-Group(de):	Applikationen/Laut
-Group(es):	Aplicaciones/Sonido
-Group(pl):	Aplikacje/D¼wiêk
-Group(pt_BR):	Aplicações/Som
       
 %description radio
 This is a ncurses-based radio application.
@@ -82,11 +73,6 @@ Summary(es):	xawtv: misc
 Summary(pl):	Ró¿ne narzêdzia pomocnicze do xawtv
 Summary(pt_BR):	Ferramentas adicionais do xawtv
 Group:		X11/Applications
-Group(de):	X11/Applikationen
-Group(es):	X11/Aplicaciones
-Group(pl):	X11/Aplikacje
-Group(pt_BR):	X11/Aplicações
-Group(pt):	X11/Aplicações
 
 %description misc
 This package has a few tools you might find useful. They have not to
@@ -122,8 +108,6 @@ Ferramentas adicionais para depuração dos componentes do pacote xawtv:
 Summary:	HTTP daemon for alevt teletext decoder
 Summary(pl):	Daemon HTTP dla dekodera teletekstu alevt
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 Requires:	alevt
 
 %description alevtd
@@ -136,11 +120,6 @@ Daemon HTTP dla dekodera teletekstu alevt
 Summary:	ASCII Art TV viewer
 Summary(pl):	Tekstowy program do ogl±dania TV
 Group:		X11/Applications
-Group(de):	X11/Applikationen
-Group(es):	X11/Aplicaciones
-Group(pl):	X11/Aplikacje
-Group(pt_BR):	X11/Aplicações
-Group(pt):	X11/Aplicações
 
 %description ttv
 TV tuner program using ASCII characters to display picture.
