@@ -1,7 +1,7 @@
 #
 # Conditional build:
-# _without_aalib  - compile without aalib support
-# _without_lirc	  - compile without lirc remote control support
+# _without_aalib	- compile without aalib support
+# _without_lirc		- compile without lirc remote control support
 
 Summary:	Video4Linux Stream Capture Viewer
 Summary(es):	Video4Linux Stream Capture Viewer
@@ -186,7 +186,7 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/%{_bindir} \
+install -d $RPM_BUILD_ROOT%{_bindir} \
 	$RPM_BUILD_ROOT/usr/X11R6/lib/X11{,/pl}/app-defaults \
 	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
 	$RPM_BUILD_ROOT/usr/bin \
