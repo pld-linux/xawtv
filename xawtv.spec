@@ -2,14 +2,19 @@
 # _without_lirc	compile without lirc remote control support
 
 Summary:	Video4Linux Stream Capture Viewer
+Summary(es):	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
+Summary(pt_BR):	Visualizador de fluxos de imagens obtidas através do Video4Linux
 Name:		xawtv
 Version:	3.67
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
+Group(es):	X11/Aplicaciones
 Group(pl):	X11/Aplikacje
+Group(pt_BR):	X11/Aplicações
+Group(pt):	X11/Aplicações
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
@@ -46,12 +51,24 @@ Kolekcja narzêdzi video dla Linuxa
  - streamer - narzêdzie do przechwytywanie obrazu (zdjêcia / filmy)
  - v4lctl - narzêdzie do kontroli urz±dzeñ v4l
 
+%description -l pt_BR
+Uma coleção de ferramentas para o video4linux:
+- xawtv - Visualização de filmes (fluxos de imagens) para o X
+- fbtv - Versão do xawtv para console com framebuffer
+- streamer - ferramenta e captura (imagens / filmes)
+- v4lctl - ferramenta de linha de comando para controlar dispositivos
+  v4l
+
 %package radio
 Summary:	radio
+Summary(es):	xawtv: radio
 Summary(pl):	radio
+Summary(pt_BR):	Suporte a rádio no xawtv
 Group:		Applications/Sound
 Group(de):	Applikationen/Laut
+Group(es):	Aplicaciones/Sonido
 Group(pl):	Aplikacje/D¼wiêk
+Group(pt_BR):	Aplicações/Som
       
 %description radio
 This is a ncurses-based radio application.
@@ -61,10 +78,15 @@ Aplikacje radiowe bazuj±ce na ncurses.
 
 %package misc
 Summary:	Misc utils related (or not) to xawtv
-Summary:	Ró¿ne narzêdzia pomocnicze do xawtv
+Summary(es):	xawtv: misc
+Summary(pl):	Ró¿ne narzêdzia pomocnicze do xawtv
+Summary(pt_BR):	Ferramentas adicionais do xawtv
 Group:		X11/Applications
 Group(de):	X11/Applikationen
+Group(es):	X11/Aplicaciones
 Group(pl):	X11/Aplikacje
+Group(pt_BR):	X11/Aplicações
+Group(pt):	X11/Aplicações
 
 %description misc
 This package has a few tools you might find useful. They have not to
@@ -83,6 +105,18 @@ wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
  - dump-mixers - "Dump" mixer
  - record - Rejestrator d¼wiêku.
  - showriff - Wy¶wietla strukturê plików RIFF (avi, wav).
+
+%description -l pt_BR misc
+Ferramentas adicionais para depuração dos componentes do pacote xawtv:
+
+ - propwatch - monitora as propriedades de janelas X11. Se você quiser
+   saber como monitorar a propriedade _XAWTV_STATION use esta ferramenta.
+ - dump-mixers - apresenta as configurações do misturador na saída
+   padrão.
+ - record - gravador de som para o console. Tem um medidor de nível de
+   entrada que deve ser útil para auxiliar na resolução de problemas de
+   som.
+ - showriff - mostra a estrutura de arquivos RIFF (avi, wav).
 
 %package alevtd
 Summary:	HTTP daemon for alevt teletext decoder
@@ -103,13 +137,17 @@ Summary:	ASCII Art TV viewer
 Summary(pl):	Tekstowy program do ogl±dania TV
 Group:		X11/Applications
 Group(de):	X11/Applikationen
+Group(es):	X11/Aplicaciones
 Group(pl):	X11/Aplikacje
+Group(pt_BR):	X11/Aplicações
+Group(pt):	X11/Aplicações
 
 %description ttv
 TV tuner program using ASCII characters to display picture.
 
 %description -l pl ttv
-Program do obs³ugi tunera TV wy¶wietlaj±cy obraz przy u¿yciu znaków ASCII.
+Program do obs³ugi tunera TV wy¶wietlaj±cy obraz przy u¿yciu znaków
+ASCII.
 
 %prep
 %setup -q
