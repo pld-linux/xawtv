@@ -1,6 +1,6 @@
-diff -Nru xawtv-3.38/src/Makefile.in xawtv-3.38.new/src/Makefile.in
---- xawtv-3.38/src/Makefile.in	Sun Feb 25 20:21:21 2001
-+++ xawtv-3.38.new/src/Makefile.in	Sun Mar 11 21:43:06 2001
+diff -urN xawtv-3.67.orig/src/Makefile.in xawtv-3.67/src/Makefile.in
+--- xawtv-3.67.orig/src/Makefile.in	Thu Dec 13 13:15:07 2001
++++ xawtv-3.67/src/Makefile.in	Wed Jan 16 15:53:50 2002
 @@ -9,7 +9,7 @@
  
  # object files /libraries
@@ -9,11 +9,11 @@ diff -Nru xawtv-3.38/src/Makefile.in xawtv-3.38.new/src/Makefile.in
 +		  capture.o ../libng/libng.a userdir.o
  
  XAWTV_OBJS	= main.o xt.o toolbox.o conf.o x11.o xv.o complete-xaw.o \
- 		  wmhooks.o channel.o lirc.o $(COMMON_OBJS)
-diff -Nru xawtv-3.38/src/channel.c xawtv-3.38.new/src/channel.c
---- xawtv-3.38/src/channel.c	Sat Mar 10 14:36:14 2001
-+++ xawtv-3.38.new/src/channel.c	Sun Mar 11 21:41:31 2001
-@@ -43,6 +43,7 @@
+ 		  wmhooks.o channel.o lirc.o midictrl.o joystick.o \
+diff -urN xawtv-3.67.orig/src/channel.c xawtv-3.67/src/channel.c
+--- xawtv-3.67.orig/src/channel.c	Thu Jan 10 18:11:44 2002
++++ xawtv-3.67/src/channel.c	Wed Jan 16 15:55:42 2002
+@@ -46,6 +46,7 @@
  #include "frequencies.h"
  #include "sound.h"
  #include "parseconfig.h"
@@ -21,14 +21,13 @@ diff -Nru xawtv-3.38/src/channel.c xawtv-3.38.new/src/channel.c
  
  /* ----------------------------------------------------------------------- */
  /* misc common stuff, not only channel related                             */ 
-@@ -347,9 +348,22 @@
-     char mixerdev[32],mixerctl[16];
-     char **list,*val;
+@@ -362,8 +363,22 @@
+     char filename[100];
+     char *val;
      int  i;
 +    struct cfv cfgfile;
  
-     cfg_parse_file(CONFIGFILE);
--    sprintf(filename,"%s/%s",getenv("HOME"),".xawtv");
+     sprintf(filename,"%s/%s",getenv("HOME"),".xawtv");
 +    cfgfile.variable = "CONFIG_DIR";
 +    cfgfile.home_dir = NULL;
 +    cfgfile.home_scd = NULL;
@@ -36,16 +35,16 @@ diff -Nru xawtv-3.38/src/channel.c xawtv-3.38.new/src/channel.c
 +    cfgfile.prefix = ".";
 +    cfgfile.suffix = "";
 +    cfgfile.mode = M_REGULAR_FILE;
-+ 
++
 +    if ((notnullusercfv (&cfgfile)) != -1)
 +         sprintf(filename,"%s",cfgfile.result);
 +    else
 +         sprintf(filename,"%s/%s",getenv("HOME"),".xawtv");
-+ 
-     if (0 == cfg_parse_file(filename))
++
+     if (0 == cfg_parse_file(CONFIGFILE))
  	have_config = 1;
- 
-@@ -471,8 +485,21 @@
+     if (0 == cfg_parse_file(filename))
+@@ -507,8 +522,21 @@
      FILE *fp;
      int i;
  
@@ -69,8 +68,9 @@ diff -Nru xawtv-3.38/src/channel.c xawtv-3.38.new/src/channel.c
  
      /* delete old backup */
      unlink(filename2);
---- xawtv-3.38/src/userdir.c	Thu Jan  1 01:00:00 1970
-+++ xawtv-3.38.new/src/userdir.c	Sun Mar 11 21:41:31 2001
+diff -urN xawtv-3.67.orig/src/userdir.c xawtv-3.67/src/userdir.c
+--- xawtv-3.67.orig/src/userdir.c	Thu Jan  1 01:00:00 1970
++++ xawtv-3.67/src/userdir.c	Wed Jan 16 15:53:50 2002
 @@ -0,0 +1,380 @@
 +// $Id$
 +#include "userdir.h"
@@ -452,9 +452,9 @@ diff -Nru xawtv-3.38/src/channel.c xawtv-3.38.new/src/channel.c
 +}
 +
 +/******************************************************************************/
-diff -Nru xawtv-3.38/src/userdir.h xawtv-3.38.new/src/userdir.h
---- xawtv-3.38/src/userdir.h	Thu Jan  1 01:00:00 1970
-+++ xawtv-3.38.new/src/userdir.h	Sun Mar 11 21:41:31 2001
+diff -urN xawtv-3.67.orig/src/userdir.h xawtv-3.67/src/userdir.h
+--- xawtv-3.67.orig/src/userdir.h	Thu Jan  1 01:00:00 1970
++++ xawtv-3.67/src/userdir.h	Wed Jan 16 15:53:50 2002
 @@ -0,0 +1,153 @@
 +// $Id$
 +#ifndef USERDIR__H

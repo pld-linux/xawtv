@@ -1,10 +1,13 @@
-diff -urN xawtv-3.62.orig/src/frequencies.c xawtv-3.62/src/frequencies.c
---- xawtv-3.62.orig/src/frequencies.c	Thu Sep 13 12:45:33 2001
-+++ xawtv-3.62/src/frequencies.c	Tue Sep 18 14:10:04 2001
-@@ -1043,6 +1043,104 @@
- 
- /* --------------------------------------------------------------------- */
- 
+diff -urN xawtv-3.67.orig/src/frequencies.c xawtv-3.67/src/frequencies.c
+--- xawtv-3.67.orig/src/frequencies.c	Tue Nov 13 14:22:04 2001
++++ xawtv-3.67/src/frequencies.c	Wed Jan 16 16:02:13 2002
+@@ -1173,6 +1173,104 @@
+     { "092",  638250 },
+     { "093",  644250 },
+ };
++ 
++/* --------------------------------------------------------------------- */
++
 +/* PTK (Polska Telewizja Kablowa, Polish Cable Television)  */
 +static struct CHANLIST cable_poland_PTK[] = {
 +    { "S-01",	111250 },
@@ -100,25 +103,22 @@ diff -urN xawtv-3.62.orig/src/frequencies.c xawtv-3.62/src/frequencies.c
 +    { "K-61",	791250 },
 +    { "K-62",	799250 }
 +};
-+
-+/* --------------------------------------------------------------------- */
-+
- struct CHANLISTS chanlists[] = {
-     { "us-bcast",         ntsc_bcast,        CHAN_COUNT(ntsc_bcast)        },
-     { "us-cable",         ntsc_cable,        CHAN_COUNT(ntsc_cable)        },
-@@ -1059,6 +1157,7 @@
-     { "china-bcast",      pal_bcast_cn,      CHAN_COUNT(pal_bcast_cn)      },
+ 
+ /* --------------------------------------------------------------------- */
+ 
+@@ -1193,6 +1291,7 @@
      { "southafrica",      pal_bcast_za,      CHAN_COUNT(pal_bcast_za)      },
      { "argentina",        argentina,         CHAN_COUNT(argentina)         },
+     { "canada-cable",     ntsc_cable_ca,     CHAN_COUNT(ntsc_cable_ca)     },
 +    { "cable-poland-PTK", cable_poland_PTK,  CHAN_COUNT(cable_poland_PTK)  },
      { NULL, NULL, 0 } /* EOF */
  };
  
-@@ -1078,6 +1177,7 @@
-     { 12, "china-bcast" },	
+@@ -1213,6 +1312,7 @@
      { 13, "southafrica" },
      { 14, "argentina" },
-+    { 15, "cable-poland-PTK" },
+     { 15, "canada-cable" },
++    { 16, "cable-poland-PTK" },
      { -1, NULL }
  };
  
