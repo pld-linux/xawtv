@@ -9,7 +9,7 @@ Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
 Version:	3.82
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
@@ -33,9 +33,6 @@ BuildRequires:	OpenGL-devel
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define         _prefix         /usr/X11R6
-%define		_libdir		%{_prefix}/lib
-%define         _mandir         %{_prefix}/man
 %define 	font_dir 	tv-fonts-1.0
 
 %description
@@ -178,7 +175,7 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/%{_bindir} \
-	$RPM_BUILD_ROOT%{_libdir}/X11{,/pl}/app-defaults \
+	$RPM_BUILD_ROOT/usr/X11R6/lib/X11{,/pl}/app-defaults \
 	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT%{_fontsdir}/misc
@@ -187,14 +184,12 @@ install -d $RPM_BUILD_ROOT/%{_bindir} \
 	DESTDIR="$RPM_BUILD_ROOT" \
 	SUID_ROOT=""
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
+install %{SOURCE1} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults/Xawtv
 install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE4} .
 
 cp %{font_dir}/*.gz $RPM_BUILD_ROOT%{_fontsdir}/misc/
-
-mv $RPM_BUILD_ROOT{%{_bindir},/usr/bin}/alevtd
 
 %post
 cd %{_fontsdir}
@@ -222,10 +217,19 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/showqt
 %attr(755,root,root) %{_bindir}/pia
 %attr(755,root,root) %{_bindir}/v4l-info
+%attr(755,root,root) %{_bindir}/motv
+%attr(755,root,root) %{_bindir}/mtt
 %{_libdir}/%{name}
 
-%{_libdir}/X11/app-defaults/Xawtv
-%lang(pl) %{_libdir}/X11/pl/app-defaults/Xawtv
+/usr/X11R6/lib/X11/app-defaults/Xawtv
+/usr/X11R6/lib/X11/app-defaults/MoTV
+/usr/X11R6/lib/X11/app-defaults/mtt
+%lang(pl) /usr/X11R6/lib/X11/pl/app-defaults/Xawtv
+%lang(it) /usr/X11R6/lib/X11/it/app-defaults/MoTV
+%lang(fr) /usr/X11R6/lib/X11/fr/app-defaults/MoTV
+%lang(de) /usr/X11R6/lib/X11/de/app-defaults/MoTV
+%lang(de) /usr/X11R6/lib/X11/de_DE.UTF-8/app-defaults/MoTV
+
 %{_applnkdir}/Multimedia/*
 
 %{_datadir}/%{name}
