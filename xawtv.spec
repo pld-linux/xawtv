@@ -29,7 +29,7 @@ BuildRequires:	Xaw3d-devel >= 1.5
 BuildRequires:	XFree86-devel
 BuildRequires:	aalib-devel
 BuildRequires:  zvbi-devel
-BuildRequires:	XFree86-OpenGL-devel
+BuildRequires:	OpenGL-devel
 %{!?_without_lirc:BuildRequires: lirc-devel}
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
