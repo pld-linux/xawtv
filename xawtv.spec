@@ -76,7 +76,7 @@ wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 %configure #\
 	#--enable-lirc
-make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
