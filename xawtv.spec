@@ -9,12 +9,12 @@ Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
 Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
-Version:	3.92
-Release:	5
+Version:	3.94
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
-# Source0-md5:	5a59209805d0ef92958ce547b12d17c8
+# Source0-md5:	df768711930605918106c1477327d348
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
@@ -30,6 +30,7 @@ Patch5:		%{name}-path-fix.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
+BuildRequires:	XFree86
 BuildRequires:	Xaw3d-devel >= 1.5
 %{?with_aalib:BuildRequires:	aalib-devel}
 BuildRequires:	alsa-lib-devel
@@ -264,7 +265,6 @@ fontpostinst misc
 %lang(es) %{_mandir}/es/man1/rootv.1*
 %lang(es) %{_mandir}/es/man1/scantv.1*
 %lang(es) %{_mandir}/es/man1/streamer.1*
-%lang(es) %{_mandir}/es/man1/ttv.1*
 %lang(es) %{_mandir}/es/man1/v4lctl.1*
 %lang(es) %{_mandir}/es/man1/xawtv-remote.1*
 %lang(es) %{_mandir}/es/man1/xawtv.1*
@@ -303,4 +303,5 @@ fontpostinst misc
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/ttv
 %{_mandir}/man1/ttv.1*
+%lang(es) %{_mandir}/es/man1/ttv.1*
 %endif
