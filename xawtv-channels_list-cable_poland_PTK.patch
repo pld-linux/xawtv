@@ -1,6 +1,6 @@
 diff -urN xawtv-3.67.orig/src/frequencies.c xawtv-3.67/src/frequencies.c
---- xawtv-3.67.orig/src/frequencies.c	Tue Nov 13 14:22:04 2001
-+++ xawtv-3.67/src/frequencies.c	Wed Jan 16 16:02:13 2002
+--- xawtv-3.67.orig/common/frequencies.c	Tue Nov 13 14:22:04 2001
++++ xawtv-3.67/common/frequencies.c	Wed Jan 16 16:02:13 2002
 @@ -1173,6 +1173,104 @@
      { "092",  638250 },
      { "093",  644250 },

@@ -1,12 +1,10 @@
-diff -Nur xawtv-3.23/radio/radio.c mute/radio/radio.c
---- xawtv-3.23/radio/radio.c	Wed Jul  7 22:32:44 1999
-+++ mute/radio/radio.c	Sun Oct 29 22:56:48 2000
-@@ -320,7 +320,19 @@
- 		ifreq = fkeys[key - KEY_F(1)];
- 		mvwprintw(wcommand, 1, 2, "Go to preset station %d", key - KEY_F(0));
+diff -urN xawtv-3.74/console/radio.c xawtv-3.74.new/console/radio.c
+--- xawtv-3.74/console/radio.c	Tue Jan 22 15:10:44 2002
++++ xawtv-3.74.new/console/radio.c	Sat May  4 21:19:11 2002
+@@ -628,6 +628,18 @@
+ 		mvwprintw(wcommand, 1, 2, "Go to preset station %d", i+1);
  	    }
--	    break;	    
-+	    break;
+ 	    break;
 +	case 'm':
 +	case 'M':
 +	    if (mute == 0) {
@@ -19,6 +17,6 @@ diff -Nur xawtv-3.23/radio/radio.c mute/radio/radio.c
 +	        mvwprintw(wcommand, 1, 2, "Unmute");
 +	    }
 +	    break;
- 	}
-     }
-     if (mute)
+ 	case 'L' & 0x1f:  /* Ctrl-L */
+ 	    redrawwin(stdscr);
+ 	    redrawwin(wfreq);
