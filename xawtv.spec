@@ -8,8 +8,8 @@ Group:		X11/Applications
 Group(pl):	X11/Aplikacje
 Source0:	http://me.in-berlin.de/~kraxel/v4l/%{name}_%{version}.tar.gz
 Source1:	Xawtv.ad-pl
-Source2:	xawtv.desktop
-Patch0:		xawtv-home_etc.patch
+Source2:	%{name}.desktop
+Patch0:		%{name}-home_etc.patch
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	libjpeg-devel
 BuildRequires:	Xaw3d-devel
