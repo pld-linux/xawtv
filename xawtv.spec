@@ -1,7 +1,7 @@
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
-Version:	3.14
+Version:	3.15
 Release:	1
 License:	GNU 
 Group:		X11/Applications
@@ -74,7 +74,8 @@ wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
 
 %build
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
-%configure
+%configure #\
+	#--enable-lirc
 make
 
 %install
@@ -114,6 +115,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xawtv-remote
 %attr(755,root,root) %{_bindir}/xawtv
 %attr(755,root,root) %{_bindir}/v4lctl
+%attr(755,root,root) %{_bindir}/rootv
+%attr(755,root,root) %{_bindir}/webcam
 
 %{_libdir}/X11/app-defaults/Xawtv
 %lang(pl) %{_libdir}/X11/pl/app-defaults/Xawtv
@@ -125,6 +128,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/v4lctl.1*
 %{_mandir}/man1/xawtv-remote.1*
 %{_mandir}/man1/xawtv.1*
+%{_mandir}/man1/webcam.1*
+%{_mandir}/man1/rootv.1*
 
 %files radio
 %defattr(644,root,root,755)
@@ -139,3 +144,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/record
 %attr(755,root,root) %{_bindir}/showriff
 %{_mandir}/man1/propwatch.1*
+%{_mandir}/man1/showriff.1*
