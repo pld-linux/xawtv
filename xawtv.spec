@@ -2,7 +2,7 @@ Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.24
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
@@ -10,6 +10,7 @@ Group(pl):	X11/Aplikacje
 Source0:	http://www.strusel007.de/linux/xawtv/%{name}_%{version}.tar.gz
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
+Source3:	%{name}-conf_example-PTK
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-newkeys-radio.patch
 Patch2:		%{name}-channels_list-cable_poland_PTK.patch
@@ -115,11 +116,13 @@ install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
 install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
+install %{SOURCE3} .
 
 install http/alevtd $RPM_BUILD_ROOT/usr/bin
 
 gzip -9nf README Changes Programming-FAQ Trouble-Shooting \
 	Sound-FAQ README.lirc README.bttv UPDATE_TO_v3.0 tools/README \
+	xawtv-conf_example-* \
 	$RPM_BUILD_ROOT%{_libdir}/X11/fonts/misc/*
 
 %post
