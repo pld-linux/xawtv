@@ -8,6 +8,7 @@ Group:		X11/Applications
 Group(pl):	X11/Aplikacje
 Source0:	http://me.in-berlin.de/~kraxel/v4l/%{name}-%{version}.tar.gz
 Source1:	Xawtv.ad-pl
+Patch0:		xawtv-home_etc.patch
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	libjpeg-devel
 BuildRequires:	Xaw3d-devel
@@ -72,6 +73,7 @@ xawtv. Zosta³y napisane w celu debagowania xawtv.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS

@@ -1,0 +1,613 @@
+diff -urN xawtv-3.12.orig/src/Makefile.in xawtv-3.12/src/Makefile.in
+--- xawtv-3.12.orig/src/Makefile.in	Mon Apr  3 20:17:02 2000
++++ xawtv-3.12/src/Makefile.in	Fri Apr 21 15:12:49 2000
+@@ -24,7 +24,7 @@
+ PROGS=xawtv xawtv-remote v4l-conf v4lctl streamer xvideo fbtv
+ 
+ COMMON_OBJS= sound.o grab.o grab-v4l.o grab-v4l2.o colorspace.o webcam.o \
+-	frequencies.o writefile.o commands.o parseconfig.o mjpeg.o
++	frequencies.o writefile.o commands.o parseconfig.o mjpeg.o userdir.o
+ CAPTURE_OBJS= capture.o writeavi.o
+ LIRC_OBJS=lirc.o
+ 
+diff -urN xawtv-3.12.orig/src/channel.c xawtv-3.12/src/channel.c
+--- xawtv-3.12.orig/src/channel.c	Sat Mar 25 16:33:35 2000
++++ xawtv-3.12/src/channel.c	Fri Apr 21 14:58:29 2000
+@@ -41,6 +41,7 @@
+ #include "frequencies.h"
+ #include "sound.h"
+ #include "parseconfig.h"
++#include "userdir.h"
+ 
+ /* ----------------------------------------------------------------------- */
+ /* misc common stuff, not only channel related                             */ 
+@@ -327,8 +328,21 @@
+     char **list,*val;
+     int  i;
+ 
++   struct cfv cfgfile;
++   cfgfile.variable = "CONFIG_DIR";
++   cfgfile.home_dir = NULL;
++   cfgfile.home_scd = NULL;
++   cfgfile.subname = "xawtv";
++   cfgfile.prefix = ".";
++   cfgfile.suffix = "";
++   cfgfile.mode = M_REGULAR_FILE;
++
++   if ((notnullusercfv (&cfgfile)) != -1)
++        sprintf(filename,"%s",cfgfile.result);
++   else
++        sprintf(filename,"%s/%s",getenv("HOME"),".xawtv");
++
+     cfg_parse_file("/usr/X11R6/lib/X11/xawtvrc");
+-    sprintf(filename,"%s/%s",getenv("HOME"),".xawtv");
+     if (0 == cfg_parse_file(filename))
+ 	have_config = 1;
+ 
+@@ -445,8 +459,21 @@
+     FILE *fp;
+     int i;
+ 
+-    sprintf(filename1,"%s/%s",getenv("HOME"),".xawtv");
+-    sprintf(filename2,"%s/%s",getenv("HOME"),".xawtv~");
++   struct cfv cfgfile;
++   cfgfile.variable = "CONFIG_DIR";
++   cfgfile.home_dir = NULL;
++   cfgfile.home_scd = NULL;
++   cfgfile.subname = "xawtv";
++   cfgfile.prefix = ".";
++   cfgfile.suffix = "";
++   cfgfile.mode = M_REGULAR_FILE;
++
++   if ((notnullusercfv (&cfgfile)) != -1)
++        sprintf(filename1,"%s",cfgfile.result);
++   else
++        sprintf(filename1,"%s/%s",getenv("HOME"),".xawtv");
++
++    sprintf(filename2,"%s%s",filename1,"~");
+ 
+     /* delete old backup */
+     unlink(filename2);
+diff -urN xawtv-3.12.orig/src/userdir.c xawtv-3.12/src/userdir.c
+--- xawtv-3.12.orig/src/userdir.c	Thu Jan  1 01:00:00 1970
++++ xawtv-3.12/src/userdir.c	Sun Mar  5 02:43:47 2000
+@@ -0,0 +1,380 @@
++// $Id$
++#include "userdir.h"
++
++static char *nonulhome = "";
++static char variablebuf[MAXPATHLEN];
++
++/******************************************************************************/
++
++char *getvarbydotfile (char *variable, 
++		       char *home_directory)
++{
++    char *p, *var, *retptr;
++    char line[256];
++    char buf[MAXPATHLEN];
++    FILE *cfile;
++
++    *variablebuf = '\0';
++    retptr = NULL;
++    snprintf(buf,  MAXPATHLEN - 1, "%s/%s", home_directory, DOTFILENAME);
++    /* tu niech bada czy jest prawo zapisu dla innych */
++    cfile = fopen (buf, "r");
++    if (cfile == NULL) return (NULL);
++    line[255] = '\0';
++    while (fgets(line, 255, cfile))
++	{
++	if ((p=strchr(line, '#'))) *p = '\0';
++	if ((p=strchr(line, '\n'))) *p = '\0';
++	if (*line == ' ' || *line == '\t')
++	    {
++	    p = line;
++	    do p++;
++	    while (*p != '\0' && (*p == ' ' || *p == '\t'));
++	    if (p == '\0') continue; /* syntax error */
++	    var = p;
++	    }
++	else var = line;
++	if (   (p=strchr(line, ' ')) 
++	    || (p=strchr(line, '\t')) 
++	    || (p=strchr(line, '=')) )
++	    {
++	    *p = '\0';
++	    do p++;
++	    while (   *p != '\0' 
++	           && (   *p == ' ' 
++		       || *p == '\t' 
++		       || *p == '=')
++		  );
++	    if (p == '\0') continue; /* syntax error */
++	    }
++	else continue; /* syntax error */
++	
++	if (!strcmp(var, variable)) /* have got it! */
++	    {
++	    strncpy (variablebuf, p, MAXPATHLEN - 1);
++	    retptr = variablebuf;
++	    break;
++	    }
++	}
++    fclose (cfile);
++#ifdef MAP_FILE_LOOKUP_TO_ENV
++    snprintf(buf, MAXPATHLEN, "%s=%s", variable, retptr);
++    (void) putenv (buf);
++#endif
++    return (retptr);
++}
++
++/******************************************************************************/
++
++int getusercfv(char *variable,
++	       char *home_dir,
++	       char *user_dir,
++	       size_t stringsize)
++{
++    struct stat st;
++    char *d;
++
++    bzero(user_dir, stringsize);
++    if (variable == NULL || *variable == '\0')
++	return (-1);
++    if (home_dir == NULL)
++	home_dir = nonulhome;
++    else
++	{ /* remove last / in home_dir */
++	if ((d = strrchr(home_dir, '/')) && *(d+1) == '\0')
++	    *d = '\0';
++	}
++    d = getenv(variable);    
++    if (d == NULL || *d == '\0') /* don't have variable */
++	{
++	d = getvarbydotfile (variable, home_dir);
++	if (d == NULL || *d == '\0') /* don't have variable */
++	    {
++	    errno = ENOENT;
++	    return (-1);
++	    }
++	}
++    if (*d == '/') {
++	strncpy(user_dir, d, stringsize - 1);
++    } else {
++	snprintf(user_dir, stringsize - 1, "%s/%s", home_dir, d);
++    }
++    if (stat(user_dir, &st) != -1 && S_ISDIR(st.st_mode)) {
++	return (0);
++    }
++    errno = ENOENT;
++    return (-1);
++}
++
++/******************************************************************************/
++
++int detectcfv(struct cfv *CFV)
++{
++    if (CFV->subname == NULL)
++	CFV->subname = nonulhome;
++    if (CFV->home_dir == NULL)
++	CFV->home_dir = getenv("HOME");
++    if (CFV->home_dir == NULL)
++	CFV->home_dir = CFV->home_scd;
++    if (CFV->home_dir == NULL)
++	{
++	errno = ENOENT;
++	return (-1);
++	}
++    return 0;
++}
++
++/******************************************************************************/
++
++int preparemain(struct cfv *CFV)
++{
++    char *p;
++    struct stat st;
++    if ((p = strrchr(CFV->result, '/')) && *(p + 1) == '\0')
++	p = '\0';
++    snprintf((rindex(CFV->result, '\0')), MAXPATHLEN - 1, "/%s",
++	     CFV->subname);
++    if (stat(CFV->result, &st) != -1
++	&& CFV->mode ?
++	S_ISDIR(st.st_mode):
++	S_ISREG(st.st_mode))
++	return (1);
++    return 0;
++}
++
++/******************************************************************************/
++
++int preparehome(struct cfv *CFV)
++{
++    struct stat st;
++
++    if (CFV->home_dir == NULL || *(CFV->home_dir) == '\0')
++	return (-1);
++
++    snprintf(CFV->result, MAXPATHLEN - 1, "%s/%s%s%s",
++	     CFV->home_dir,
++	     CFV->prefix ? CFV->prefix : "",
++	     CFV->subname,
++	     CFV->suffix ? CFV->suffix : "");
++	     
++    if (stat(CFV->result, &st) != -1
++	&& CFV->mode ?
++	S_ISDIR(st.st_mode) :
++	S_ISREG(st.st_mode))	/* have file or dir */
++	return (2);
++
++    return (-1);
++}
++
++/******************************************************************************/
++
++int usercfv(struct cfv *CFV)
++{
++    int gr;
++
++    CFV->athome = 0;
++    gr = detectcfv(CFV);
++    if (gr)
++	return gr;
++
++    /* get environment variable */
++    gr = getusercfv(CFV->variable,
++		    CFV->home_dir,
++		    CFV->result,
++		    MAXPATHLEN);
++		    
++    if (gr != -1) {		/* have main directory + read permission */
++	gr = preparemain(CFV);
++	if (gr && !access(CFV->result, CFV->mode ? X_OK : R_OK))
++	    return 0;
++	}
++    /* don't have main directory or a proper variable set */
++    gr = preparehome(CFV);
++    if (gr == -1) return (-1);
++    if (access(CFV->result, CFV->mode ? X_OK : R_OK))
++	return (-1);
++    CFV->athome = 1;
++    return 1;
++}
++
++/******************************************************************************/
++
++/* If directory or file doesn't exist returns the best one wich may be created */
++int notnullusercfv(struct cfv *CFV)
++{
++    char buf[MAXPATHLEN];
++    int gr;
++    char *p;
++
++    if ((gr = usercfv(CFV)) == -1) {
++	gr = detectcfv(CFV);
++	if (gr)
++	    return gr;		/* remember, it works for errors! */
++	/* get the environment variable */
++	gr = getusercfv(CFV->variable,
++			CFV->home_dir,
++			CFV->result,
++			MAXPATHLEN);
++			
++	(void) preparemain(CFV);
++	strncpy(buf, CFV->result, MAXPATHLEN-1);
++	p = strrchr(buf, '/');
++	if (p) *p = '\0';
++	if (!access(buf, W_OK))
++	    return 0;
++
++	/* don't have main directory or a proper variable set */
++	/* or not enough permissions			      */
++	(void) preparehome(CFV);
++	strncpy(buf, CFV->result, MAXPATHLEN-1);
++	p = strrchr(buf, '/');
++	if (p) *p = '\0';
++	if (access(buf, W_OK))
++	    return (-1);
++	CFV->athome = 1;
++	return 1;
++    }
++    return (gr);
++}
++
++/******************************************************************************/
++
++int chdircfv(struct cfv *CFV)
++{
++    if ((usercfv(CFV)) == -1)
++	return (-1);
++    return ( chdir(CFV->result) );
++}
++
++/******************************************************************************/
++
++int forcechdircfv(struct cfv *CFV, mode_t mode)
++{
++    int ret;
++    
++    ret = chdircfv(CFV);
++    if (ret != -1) 
++	return 0;
++	
++    ret = notnullusercfv(CFV);
++    
++    if (ret != -1) /* have the best location */
++	{
++	ret = mkdir(CFV->result, mode);
++	if (ret == -1) return ret;
++	ret = chdir(CFV->result);
++	if (ret == -1) return ret;
++	return 1;
++	}
++    return (-1);
++}
++
++/******************************************************************************/
++
++int checkfilecfv (struct cfv *CFV, mode_t mode)
++{
++  int fd;
++
++  if ((usercfv(CFV)) != -1)
++      return 1; /* already present! */
++
++  if ((notnullusercfv(CFV)) == -1)
++      return (-1);
++      
++  fd = open (CFV->result, O_CREAT|O_WRONLY|O_APPEND, mode);
++  if (fd == -1)
++      return (-1);
++  close (fd);
++  return (0);
++}
++
++/******************************************************************************/
++
++int checkdircfv (struct cfv *CFV, mode_t mode)
++{
++  if ((usercfv(CFV)) != -1)
++      return 1; /* already present! */
++  if ((notnullusercfv(CFV)) == -1)
++      return (-1);
++  return ( mkdir(CFV->result, mode) );
++}
++
++/******************************************************************************/
++
++int checkoutcfv (struct cfv *CFV, mode_t mode)
++{
++  if (CFV->mode == M_DIRECTORY)
++      return ( checkdircfv (CFV, mode) );
++  return ( checkfilecfv (CFV, mode) );
++}
++
++/******************************************************************************/
++
++FILE *maynullfopencfv(struct cfv * CFV, const char *mode)
++{
++    FILE *cfvfile = NULL;
++
++    if ((usercfv(CFV)) == -1)
++    	{
++	errno = ENOENT;
++	return (NULL);
++	}
++    cfvfile = fopen(CFV->result, mode);
++    return (cfvfile);
++}
++/******************************************************************************/
++
++FILE *notnullfopencfv(struct cfv * CFV, const char *mode)
++{
++    FILE *cfvfile = NULL;
++    
++    if ((notnullusercfv(CFV)) == -1)
++	return (NULL);
++
++    cfvfile = fopen(CFV->result, mode);
++    return (cfvfile);
++}
++
++/******************************************************************************/
++
++FILE *fopencfv(struct cfv * CFV, const char *mode)
++{
++    FILE *cfvfile = NULL;
++
++    if ((strpbrk(mode, "wa")) != NULL)	/* create in best location */
++	cfvfile = notnullfopencfv(CFV, mode);
++    else
++	cfvfile = maynullfopencfv(CFV, mode);
++
++    return (cfvfile);
++}
++
++/******************************************************************************/
++
++DIR *opendircfv (struct cfv * CFV)
++{
++    DIR *cfvdir = NULL;
++
++    if ((usercfv(CFV)) == -1)
++	{
++	errno = ENOENT;
++	return (NULL);
++	}
++    cfvdir = opendir(CFV->result);
++    return (cfvdir);
++}
++
++/******************************************************************************/
++
++void *opencfv(struct cfv * CFV, const char *mode)
++{
++    if (CFV->mode == M_DIRECTORY ||
++        mode == NULL || 
++        *mode == '\0' || 
++	(strchr(mode,'d')) != NULL)
++	return ( (void*) opendircfv (CFV) );
++
++    return ( (void*) fopencfv (CFV, mode) );
++}
++
++/******************************************************************************/
+diff -urN xawtv-3.12.orig/src/userdir.h xawtv-3.12/src/userdir.h
+--- xawtv-3.12.orig/src/userdir.h	Thu Jan  1 01:00:00 1970
++++ xawtv-3.12/src/userdir.h	Sun Mar  5 02:43:47 2000
+@@ -0,0 +1,153 @@
++// $Id$
++#ifndef USERDIR__H
++#define USERDIR__H
++
++#include <unistd.h>
++#include <string.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <ctype.h>
++#include <dirent.h>
++#include <fcntl.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/param.h>
++#include <errno.h>
++
++#define	M_REGULAR_FILE	0	/* DO NOT SWITCH IT! */
++#define	M_DIRECTORY	1
++#define	DOTFILENAME	".userdir"
++
++/* 
++ * Should I map lookups from .userdir to 
++ * environment variable ???
++ *
++ */
++
++#define	MAP_FILE_LOOKUP_TO_ENV
++
++struct cfv {
++	char result[MAXPATHLEN];	/* our result			*/
++	char *variable;	/* name of an environment variable		*/
++	char *home_dir;	/* home directory or NULL for autodetect	*/
++	char *home_scd; /* directory if home_dir==NULL and no result	*/
++	char *subname;	/* core name of a file/directory		*/
++    	char *prefix;	/* prefix when using directly home_dir		*/
++	char *suffix;	/* suffix when using directly home_dir		*/
++	int mode;	/* expected: M_REGULAR_FILE or M_DIRECTORY	*/
++	unsigned athome:1; /* are we placed inside of home directory?	*/
++	};
++
++/****************** CORE FUNCTIONS  ******************/
++
++/* reads environment variable. if the path isn't absolute will add $HOME/
++ * at the beginning
++ * return: 0 - directory exists
++ *         -1 - directory doesn't exist
++ */
++int getusercfv (char *variable, 
++		    char *home_dir, 
++		    char *user_dir,
++		    size_t stringsize);
++/* reads the $HOME variable */
++int detectcfv(struct cfv *CFV);
++
++/* looks for the config/data file/dir.
++ * result: -1 - error - cannot find file/dir 
++ *         0 - ok
++ *         CFV.result set
++ */
++int usercfv (struct cfv *CFV);
++
++/* looks for the config/data file/dir.
++ * result: -1 - error - cannot read $HOME, not enough create permissions
++ *          0 - ok - if the CFV.result exists, read it. If not - select
++ *                   the best location for creation.
++ *              CFV.result set
++ */              
++int notnullusercfv (struct cfv *CFV);
++
++/************** GENERAL CHECKOUT FUNCTION **************/
++
++/* It tries to open file or directory, and if it doesn't
++ * exists it tries to create it in the best location. 
++ */
++int checkoutcfv (struct cfv *CFV, mode_t mode);
++
++/************* OPENING THE DIRECTORY/FILE **************/
++
++/* opens file or directory using CFV structure
++ *  if (CFV.mode is set to M_DIRECTORY 
++ *  or mode is NULL 
++ *  or mode is set to "" 
++ *  or mode contains 'd' character) -> opendircfv is invoked
++ *  else fopencfv is invoked
++ * result: pointer to DIR or FILE handle (conversion need)
++ */
++void *opencfv(struct cfv * CFV, const char *mode);
++
++/****************** CREATING THE FILE *********************/
++/*   if it doesn't exists				  */
++int checkfilecfv (struct cfv *CFV, mode_t mode);
++
++/*  NOTE:					*/
++/*						*/
++/* Some maynull-like functions specified bellow	*/
++/* can set errno variable to ENOENT if the file	*/
++/* or directory doesn't exists.			*/
++
++/****************** OPENING THE FILE ******************/
++
++/* opens file using CFV and the given mode
++ * after getting name fopen is invoked.
++ * if the given file is considered to be opened for
++ * write it is created.
++ * result: [see fopen(3)]
++ */
++FILE *fopencfv (struct cfv *CFV, const char *mode);
++
++/* opens file using CFV and the given mode
++ * just after getting filename, fopen is invoked
++ * if specified file doesn't exists error is returned
++ * result: [see fopen(3)] or NULL if cannot find the file
++ */
++FILE *maynullfopencfv (struct cfv *CFV, const char *mode);
++
++/* opens file using CFV and the given mode
++ * after getting name fopen is invoked
++ * if the specified file doesn't exists it's created
++ * in the best location
++ * result: [see fopen(3)]
++ */
++FILE *notnullfopencfv (struct cfv *CFV, const char *mode);
++
++/****************** OPENING THE DIRECTORY ****************/
++
++/* opens directory using CFV
++ * after getting name opendir is invoked
++ * result: [see opendir(3)] or NULL if the
++ *         directory doesn't exists
++ */
++DIR *opendircfv (struct cfv * CFV);
++
++/****************** CREATING THE DIRECTORY ****************/
++/*   if it doesn't exists				  */
++
++int checkdircfv (struct cfv *CFV, mode_t mode);
++
++/****************** CHANGING THE DIRECTORY ****************/
++
++/* tries to change current working directory using CFV
++ * after getting name chdir is invoked
++ * result: [see chdir(2)] or -1 if it doesn't exists
++ */
++int chdircfv (struct cfv *CFV);
++
++/* tries to change current working directory using CFV
++ * after getting name chdir is invoked
++ * if the specified directory doesn't exists it's created
++ * result: [see chdir(2)] 
++ */
++int forcechdircfv (struct cfv *CFV, mode_t mode);
++
++#endif
+Binary files xawtv-3.12.orig/webcam/webcam and xawtv-3.12/webcam/webcam differ
+Binary files xawtv-3.12.orig/webcam/webcam.o and xawtv-3.12/webcam/webcam.o differ
