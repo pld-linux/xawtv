@@ -1,8 +1,8 @@
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
-Version:	3.24
-Release:	3
+Version:	3.26
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
@@ -106,7 +106,7 @@ CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
-	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
+	$RPM_BUILD_ROOT%{_libdir}/X11{,/pl}/app-defaults \
 	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
 	$RPM_BUILD_ROOT/usr/bin
 
@@ -114,6 +114,7 @@ install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
 	ROOT="$RPM_BUILD_ROOT" \
 	SUID_ROOT=""
 
+mv $RPM_BUILD_ROOT{/etc/X11/app-defaults/Xawtv,%{_libdir}/X11/app-defaults}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
 install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE3} .
