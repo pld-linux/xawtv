@@ -107,12 +107,10 @@ gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man1/* \
 %{_prefix}/lib
 
 %files radio
-#%defattr(-,root,root)
 %attr(755,root,root) %{_prefix}/bin/radio
 %{_mandir}/man1/radio.1.gz
 
 %files misc
-#%defattr(-,root,root)
 %attr(755,root,root) %{_prefix}/bin/dump-mixers
 %attr(755,root,root) %{_prefix}/bin/propwatch
 %attr(755,root,root) %{_prefix}/bin/record
