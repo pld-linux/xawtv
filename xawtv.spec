@@ -10,12 +10,12 @@ Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
 Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
-Version:	3.88
-Release:	2
+Version:	3.90
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
-# Source0-md5:	9f43ae410965101f77c7c5d847c6842c
+# Source0-md5:	336922af4de3d3f6506f7a5e07c05a4a
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
