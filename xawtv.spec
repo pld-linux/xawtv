@@ -115,7 +115,7 @@ do very much to do with xawtv. I've used/wrote them for debugging:
  - dump-mixers - dump mixer settings to stdout
  - record - console sound recorder. Has a simple input level meter
    which might be useful to trouble shoot sound problems.
- - showriff - display the structure of RIFF files (avi, wav).
+ - showriff - display the structure of RIFF files (avi, WAV).
 
 %description misc -l pl
 Ten pakiet zawiera sporo u¿ytecznych narzêdzi. Nie maj± wiele
@@ -123,7 +123,7 @@ wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
  - propwatch - monitor ustawieñ
  - dump-mixers - "Dump" mixer
  - record - Rejestrator d¼wiêku.
- - showriff - Wy¶wietla strukturê plików RIFF (avi, wav).
+ - showriff - Wy¶wietla strukturê plików RIFF (avi, WAV).
 
 %description misc -l pt_BR
 Ferramentas adicionais para depuração dos componentes do pacote xawtv:
@@ -135,7 +135,7 @@ Ferramentas adicionais para depuração dos componentes do pacote xawtv:
  - record - gravador de som para o console. Tem um medidor de nível de
    entrada que deve ser útil para auxiliar na resolução de problemas de
    som.
- - showriff - mostra a estrutura de arquivos RIFF (avi, wav).
+ - showriff - mostra a estrutura de arquivos RIFF (avi, WAV).
 
 %package alevtd
 Summary:	HTTP daemon for alevt teletext decoder
