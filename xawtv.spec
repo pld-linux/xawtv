@@ -3,7 +3,7 @@ Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.24
 Release:	1
-License:	GNU 
+License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
 Group(pl):	X11/Aplikacje
@@ -116,7 +116,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 
 install http/alevtd $RPM_BUILD_ROOT/usr/bin
 
-gzip -9nf README Changes COPYING Programming-FAQ Trouble-Shooting \
+gzip -9nf README Changes Programming-FAQ Trouble-Shooting \
 	Sound-FAQ README.lirc README.bttv UPDATE_TO_v3.0 tools/README \
 	$RPM_BUILD_ROOT%{_libdir}/X11/fonts/misc/*
 
@@ -133,9 +133,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc {README,Changes,COPYING,Programming-FAQ,Trouble-Shooting,Sound-FAQ}.gz
-%doc {README.lirc,README.bttv,UPDATE_TO_v3.0}.gz
-
+%doc *.gz
 %attr(4755,root,root) %{_bindir}/v4l-conf
 %attr(755,root,root) %{_bindir}/fbtv
 %attr(755,root,root) %{_bindir}/streamer
