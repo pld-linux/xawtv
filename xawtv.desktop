@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=XawTV
+Comment=TV Tuner Program
+Comment[pl]=Program obs³uguj±cy tuner TV
+Exec=xawtv
+Icon=xawtv.xpm
+MiniIcon=xawtv-mini.xpm
+Terminal=0
+Type=Application
