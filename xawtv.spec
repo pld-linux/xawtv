@@ -19,8 +19,8 @@ Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
 Source4:	%{name}-conf_example-PTK
-Source5:	http://dl.bytesex.org/tv-fonts/tv-fonts-1.0.tar.bz2
-# Source5-md5:	46c68df4976306e25a1526a762371770
+Source5:	http://dl.bytesex.org/releases/tv-fonts/tv-fonts-1.1.tar.bz2
+# Source5-md5:	ae73fc0efd53e53dca7077383cc22b5a
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-channels_list-cable_poland_PTK.patch
 Patch2:		%{name}-fullscreen.patch
@@ -43,7 +43,7 @@ Requires(post,postun):	fontpostinst
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_appdefsdir	/usr/X11R6/lib/X11/app-defaults
-%define 	font_dir 	tv-fonts-1.0
+%define 	font_dir 	tv-fonts-1.1
 
 %description
 A collection tools for video4linux:
@@ -172,7 +172,7 @@ ASCII.
 
 %build
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
-# MMX support in linear-blend plugin is chosen at compile time - athlon only
+# MMX support in linear-blend plugin is chosen at compile time - athlon/p3/p4 only
 %configure \
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_lirc:--disable-lirc} \
@@ -180,7 +180,7 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 	--disable-quicktime \
 	--enable-xfree-ext \
 	--enable-xvideo \
-%ifnarch athlon
+%ifnarch athlon pentium3 pentium4
 	--disable-mmx
 %endif
 %{__make}
