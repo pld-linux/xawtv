@@ -1,0 +1,90 @@
+diff -Nuard xawtv-3.81.orig/common/channel.c xawtv-3.81/common/channel.c
+--- xawtv-3.81.orig/common/channel.c	Fri Dec  6 14:17:18 2002
++++ xawtv-3.81/common/channel.c	Sat Dec 21 19:09:34 2002
+@@ -393,8 +393,13 @@
+ 	if (0 == cfg_parse_file(conffile))
+ 	    have_config = 1;
+     } else {
+-	sprintf(filename,"%.*s/%s",(int)sizeof(filename)-8,
+-		getenv("HOME"),".xawtv");
++    
++	/* CONFIG_DIR patch */
++	if (getenv("CONFIG_DIR"))
++	    sprintf(filename,"%.*s/%s/%s",(int)sizeof(filename)-8,getenv("HOME"),getenv("CONFIG_DIR"),"xawtv");
++	else
++	    sprintf(filename,"%.*s/%s",(int)sizeof(filename)-8,getenv("HOME"),".xawtv");
++		
+ 	if (0 == cfg_parse_file(CONFIGFILE))
+ 	    have_config = 1;
+ 	if (0 == cfg_parse_file(filename))
+@@ -549,8 +554,17 @@
+     FILE *fp;
+     int i;
+ 
+-    sprintf(filename1,"%s/%s",getenv("HOME"),".xawtv");
+-    sprintf(filename2,"%s/%s",getenv("HOME"),".xawtv~");
++    if (getenv("CONFIG_DIR"))
++	{
++	sprintf(filename1,"%s/%s/%s",getenv("HOME"),getenv("CONFIG_DIR"),"xawtv");
++	sprintf(filename2,"%s/%s/%s",getenv("HOME"),getenv("CONFIG_DIR"),"xawtv~");
++	} 
++	else 
++	{
++	sprintf(filename1,"%s/%s",getenv("HOME"),".xawtv");
++	sprintf(filename2,"%s/%s",getenv("HOME"),".xawtv~");
++	}
++	
+ 
+     /* delete old backup */
+     unlink(filename2);
+diff -Nuard xawtv-3.81.orig/console/radio.c xawtv-3.81/console/radio.c
+--- xawtv-3.81.orig/console/radio.c	Fri Dec  6 11:58:06 2002
++++ xawtv-3.81/console/radio.c	Sat Dec 21 19:09:18 2002
+@@ -167,7 +167,12 @@
+ 
+     sprintf(file,"%.225s/.kde/share/config/kradiorc",getenv("HOME"));
+     if (NULL == (fp = fopen(file,"r"))) {
+-	sprintf(file,"%.225s/.radio",getenv("HOME"));
++    
++	if (getenv("CONFIG_DIR"))
++	    sprintf(file,"%.225s/%s/radio",getenv("HOME"),getenv("CONFIG_DIR"));
++	else
++	    sprintf(file,"%.225s/.radio",getenv("HOME"));
++	    
+ 	if (NULL == (fp = fopen(file,"r")))
+ 	    return;
+     }
+diff -Nuard xawtv-3.81.orig/console/webcam.c xawtv-3.81/console/webcam.c
+--- xawtv-3.81.orig/console/webcam.c	Mon Dec  9 17:00:39 2002
++++ xawtv-3.81/console/webcam.c	Sat Dec 21 19:10:23 2002
+@@ -649,7 +649,12 @@
+     if (argc > 1) {
+ 	strcpy(filename,argv[1]);
+     } else {
+-	sprintf(filename,"%s/%s",getenv("HOME"),".webcamrc");
++    
++	if (getenv("CONFIG_DIR"))
++	    sprintf(filename,"%s/%s/%s",getenv("HOME"),getenv("CONFIG_DIR"),"webcamrc");
++	else
++	    sprintf(filename,"%s/%s",getenv("HOME"),".webcamrc");
++	    
+     }
+     fprintf(stderr,"reading config file: %s\n",filename);
+     cfg_parse_file(filename);
+diff -Nuard xawtv-3.81.orig/x11/rootv.c xawtv-3.81/x11/rootv.c
+--- xawtv-3.81.orig/x11/rootv.c	Thu Nov 14 11:45:53 2002
++++ xawtv-3.81/x11/rootv.c	Sat Dec 21 19:11:10 2002
+@@ -86,8 +86,11 @@
+     char filename[100];
+     char **list;
+     
+-    sprintf(filename,"%.*s/%s",(int)sizeof(filename)-8,
+-	    getenv("HOME"),".xawtv");
++    if (getenv("CONFIG_DIR"))
++	sprintf(filename,"%.*s/%s/%s",(int)sizeof(filename)-8,getenv("HOME"),getenv("CONFIG_DIR"),"xawtv");
++    else
++	sprintf(filename,"%.*s/%s",(int)sizeof(filename)-8,getenv("HOME"),".xawtv");
++	    
+     cfg_parse_file(CONFIGFILE);
+     cfg_parse_file(filename);
+ 
