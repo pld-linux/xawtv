@@ -1,0 +1,501 @@
+diff -ruN xawtv-3.82.orig/libng/plugins/Subdir.mk xawtv-3.82/libng/plugins/Subdir.mk
+--- xawtv-3.82.orig/libng/plugins/Subdir.mk	Mon Nov 18 16:25:41 2002
++++ xawtv-3.82/libng/plugins/Subdir.mk	Sun Jan  5 15:06:47 2003
+@@ -6,7 +6,11 @@
+ 	libng/plugins/flt-disor.so \
+ 	libng/plugins/conv-mjpeg.so \
+ 	libng/plugins/read-avi.so \
+-	libng/plugins/write-avi.so
++	libng/plugins/write-avi.so \
++	libng/plugins/bilinear.so \
++	libng/plugins/cubic.so \
++	libng/plugins/linear_blend.so \
++	libng/plugins/linedoubler.so
+ ifeq ($(FOUND_LQT),yes)
+ TARGETS-plugins += \
+ 	libng/plugins/read-qt.so \
+diff -ruN xawtv-3.82.orig/libng/plugins/bilinear.c xawtv-3.82/libng/plugins/bilinear.c
+--- xawtv-3.82.orig/libng/plugins/bilinear.c	Thu Jan  1 01:00:00 1970
++++ xawtv-3.82/libng/plugins/bilinear.c	Sun Jan  5 15:06:47 2003
+@@ -0,0 +1,89 @@
++/* 
++ * Simple xawtv deinterlacing plugin - bilinear interpolation
++ * 
++ * CAVEATS: Effectively halves framerate, (working on it)
++ * May cause some general slowness (uses more cpu) but the framerate is smooth
++ * on my athlon 700, running the -mjc branch of 2.4 kernel (preempt and other
++ * patches for desktop performance)
++ * Text (in console games for example) looks really ugly
++ * 
++ * BENEFITS: It's no longer interlaced ;)
++ * Looks a metric shitton better than line doubling
++ * 
++ * AUTHORS:
++ * Conrad Kreyling <conrad@conrad.nerdland.org>
++ * Patrick Barrett <yebyen@nerdland.org>
++ * 
++ * This is licenced under the GNU GPL until someone tells me I'm stealing code
++ * and can't do that ;) www.gnu.org for any version of the license.
++ *
++ * Based on xawtv-3.66/libng/plugins/flt-nop.c (also GPL)
++ */
++
++
++#include "config.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <pthread.h>
++
++#include "grab-ng.h"
++
++static void inline
++deinterlace (struct ng_video_buf *frame)
++{
++  int x, y;
++
++  for (y = 1; y < frame->fmt.height - 1; y += 2)
++    for (x = 0; x < frame->fmt.bytesperline + 1; x++)
++      (frame->data[y * (frame->fmt.bytesperline) + x]) =
++	((frame->data[((y - 1) * (frame->fmt.bytesperline)) + x]) +
++	 (frame->data[((y + 1) * (frame->fmt.bytesperline)) + x])) >> 1;
++
++}
++
++
++static void *
++init (struct ng_video_fmt *out)
++{
++  /* don't have to carry around status info */
++  static int dummy;
++  return &dummy;
++}
++
++static struct ng_video_buf *
++frame (void *handle, struct ng_video_buf *frame)
++{
++  deinterlace (frame);		// In hindsight, we may not have needed the function ;)
++  // Added clarity when we make it more complicated.
++  return frame;
++}
++
++static void
++fini (void *handle)
++{
++  /* nothing to clean up */
++}
++
++/* ------------------------------------------------------------------- */
++
++static struct ng_filter filter = {
++  name:"bilinear deinterlace",
++  fmts:
++    (1 << VIDEO_GRAY) |
++    (1 << VIDEO_RGB15_NATIVE) |
++    (1 << VIDEO_RGB16_NATIVE) |
++    (1 << VIDEO_BGR24) |
++    (1 << VIDEO_RGB24) |
++    (1 << VIDEO_BGR32) | (1 << VIDEO_RGB32) | (1 << VIDEO_YUV422),
++  init:init,
++  frame:frame,
++  fini:fini,
++};
++
++extern void ng_plugin_init (void);
++void
++ng_plugin_init (void)
++{
++  ng_filter_register (NG_PLUGIN_MAGIC,__FILE__,&filter);
++}
+diff -ruN xawtv-3.82.orig/libng/plugins/cubic.c xawtv-3.82/libng/plugins/cubic.c
+--- xawtv-3.82.orig/libng/plugins/cubic.c	Thu Jan  1 01:00:00 1970
++++ xawtv-3.82/libng/plugins/cubic.c	Sun Jan  5 15:06:47 2003
+@@ -0,0 +1,126 @@
++/* 
++ * Simple xawtv deinterlacing plugin - cubic interpolation
++ * 
++ * CAVEATS: Effectively halves framerate, (working on it)
++ * May cause some general slowness (uses more cpu) but the framerate is smooth
++ * on my athlon 700, running the -mjc branch of 2.4 kernel (preempt and other
++ * patches for desktop performance)
++ * 
++ * BENEFITS: It's no longer interlaced ;)
++ * Looks a metric shitton better than line doubling & bilinear interpolation
++ * around text, but these nasty white specks occur on the border of pure black
++ * (0) and pure white (255).  My original theory was that it had something to
++ * do with 0 messing up our multiplication, but that does not appear to be the
++ * case based on preliminary fiddling around.
++ * 
++ * AUTHORS:
++ * Conrad Kreyling <conrad@conrad.nerdland.org>
++ * Patrick Barrett <yebyen@nerdland.org>
++ * 
++ * This is licenced under the GNU GPL until someone tells me I'm stealing code
++ * and can't do that ;) www.gnu.org for any version of the license.
++ *
++ * Based on xawtv-3.66/libng/plugins/flt-nop.c (also GPL)
++ * Cubic deinterlacing algorithm adapted from mplayer's libpostproc
++ */
++
++
++#include "config.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <pthread.h>
++
++#include "grab-ng.h"
++
++/*static int isOdd; // Global variable so we can tell if a frame uses even or
++                  //odd scanlines, not implemented properly yet */
++
++static void inline
++deinterlace (struct ng_video_buf *frame)
++{
++  int x, y, bytes = frame->fmt.bytesperline;
++
++  /*
++   * if(isOdd){
++   *     isOdd=0;
++   *     y=3;
++   * }
++   * else
++   * {
++   *     isOdd=1;
++   *     y=4;
++   * } //Set y based on scanline evenness/oddness, not implemented yet
++   */
++
++ /* for (x=0; x < strlen(frame->data); x++){
++	 switch (frame->data[x])
++	 {
++	   case 0:
++		  frame->data[x]++;
++		  break;
++	   case 255:
++		  frame->data[x]--;
++		  break;		  
++	 }
++  }*/ // This doesn't work to fix the problem with the specks
++  
++  for (y = 3; y < frame->fmt.height - 3; y += 2)
++  {
++	 for (x = 0; x < bytes; x++)
++	 {
++		frame->data[(y * bytes + x)] =
++		   ((-frame->data[((y - 3) * bytes + x)]) +
++			(9 * frame->data[((y - 1) * bytes + x)]) +
++			(9 * frame->data[((y + 1) * bytes + x)]) +
++			(-frame->data[((y + 3) * bytes + x)])) >> 4;
++	 } // Basic algorithm borrowed from mplayer's libpostproc
++  }	// Angry math
++}
++
++
++static void *
++init (struct ng_video_fmt *out)
++{
++  /* we will be using this variable soon enough */
++  static int isOdd = 0;
++  return &isOdd;
++}
++
++static struct ng_video_buf *
++frame (void *handle, struct ng_video_buf *frame)
++{
++  deinterlace (frame);
++  return frame;
++}
++
++static void
++fini (void *handle)
++{
++  /* nothing to clean up */
++}
++
++/* ------------------------------------------------------------------- */
++
++static struct ng_filter filter = {
++  name:"cubic interpolation",
++  fmts:
++    (1 << VIDEO_GRAY)			|
++    (1 << VIDEO_RGB15_NATIVE)	|
++    (1 << VIDEO_RGB16_NATIVE)	|
++    (1 << VIDEO_BGR24)			|
++    (1 << VIDEO_RGB24)			|
++	(1 << VIDEO_BGR32)			|
++	(1 << VIDEO_RGB32)			|
++	(1 << VIDEO_YUV422),
++  init:		init,
++  frame:	frame,
++  fini:		fini,
++};
++
++extern void ng_plugin_init (void);
++void
++ng_plugin_init (void)
++{
++  ng_filter_register (NG_PLUGIN_MAGIC,__FILE__,&filter);
++}
+diff -ruN xawtv-3.82.orig/libng/plugins/linear_blend.c xawtv-3.82/libng/plugins/linear_blend.c
+--- xawtv-3.82.orig/libng/plugins/linear_blend.c	Thu Jan  1 01:00:00 1970
++++ xawtv-3.82/libng/plugins/linear_blend.c	Sun Jan  5 15:06:47 2003
+@@ -0,0 +1,170 @@
++/* 
++ * Simple xawtv deinterlacing plugin - linear blend
++ * 
++ * CAVEATS: Still some interlacing effects in high motion perhaps
++ * Some ghosting in instant transitions, slightly noticeable
++ * 
++ * BENEFITS: NO DROP IN FRAMERATE =]
++ * Looks absolutely beautiful
++ * Doesn't lower framerate
++ * Oh and did I mention it doesn't lower framerate?
++ * Plus, its MMX'itized now, so it really doesn't lower framerate.
++ *
++ * AUTHORS:
++ * Conrad Kreyling <conrad@conrad.nerdland.org>
++ * Patrick Barrett <yebyen@nerdland.org>
++ *
++ * This is licenced under the GNU GPL until someone tells me I'm stealing code
++ * and can't do that ;) www.gnu.org for any version of the license.
++ *
++ * Based on xawtv-3.72/libng/plugins/flt-nop.c (also GPL)
++ * Linear blend deinterlacing algorithm adapted from mplayer's libpostproc
++ */
++
++
++#include "config.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <pthread.h>
++
++#include "grab-ng.h"
++
++
++#define PAVGB(a,b)  "pavgb " #a ", " #b " \n\t"
++
++#define MMX
++
++#ifdef MMX
++#define emms()                  __asm__ __volatile__ ("emms")
++#else
++#define emms()
++#endif
++
++static inline void linearBlend(unsigned char *src, int stride)
++{
++#ifdef MMX
++  asm volatile(
++       "leal (%0, %1), %%eax                           \n\t"
++       "leal (%%eax, %1, 4), %%ebx                     \n\t"
++
++       "movq (%0), %%mm0                               \n\t" // L0
++       "movq (%%eax, %1), %%mm1                        \n\t" // L2
++       PAVGB(%%mm1, %%mm0)                                   // L0+L2
++       "movq (%%eax), %%mm2                            \n\t" // L1
++       PAVGB(%%mm2, %%mm0)
++       "movq %%mm0, (%0)                               \n\t"
++       "movq (%%eax, %1, 2), %%mm0                     \n\t" // L3
++       PAVGB(%%mm0, %%mm2)                                   // L1+L3
++       PAVGB(%%mm1, %%mm2)                                   // 2L2 + L1 + L3
++       "movq %%mm2, (%%eax)                            \n\t"
++       "movq (%0, %1, 4), %%mm2                        \n\t" // L4
++       PAVGB(%%mm2, %%mm1)                                   // L2+L4
++       PAVGB(%%mm0, %%mm1)                                   // 2L3 + L2 + L4
++       "movq %%mm1, (%%eax, %1)                        \n\t"
++       "movq (%%ebx), %%mm1                            \n\t" // L5
++       PAVGB(%%mm1, %%mm0)                                   // L3+L5
++       PAVGB(%%mm2, %%mm0)                                   // 2L4 + L3 + L5
++       "movq %%mm0, (%%eax, %1, 2)                     \n\t"
++       "movq (%%ebx, %1), %%mm0                        \n\t" // L6
++       PAVGB(%%mm0, %%mm2)                                   // L4+L6
++       PAVGB(%%mm1, %%mm2)                                   // 2L5 + L4 + L6
++       "movq %%mm2, (%0, %1, 4)                        \n\t"
++       "movq (%%ebx, %1, 2), %%mm2                     \n\t" // L7
++       PAVGB(%%mm2, %%mm1)                                   // L5+L7
++       PAVGB(%%mm0, %%mm1)                                   // 2L6 + L5 + L7
++       "movq %%mm1, (%%ebx)                            \n\t"
++       "movq (%0, %1, 8), %%mm1                        \n\t" // L8
++       PAVGB(%%mm1, %%mm0)                                   // L6+L8
++       PAVGB(%%mm2, %%mm0)                                   // 2L7 + L6 + L8
++       "movq %%mm0, (%%ebx, %1)                        \n\t"
++       "movq (%%ebx, %1, 4), %%mm0                     \n\t" // L9
++       PAVGB(%%mm0, %%mm2)                                   // L7+L9
++       PAVGB(%%mm1, %%mm2)                                   // 2L8 + L7 + L9
++       "movq %%mm2, (%%ebx, %1, 2)                     \n\t"
++
++       : : "r" (src), "r" (stride)
++       : "%eax", "%ebx"
++  );
++  emms();
++#else
++  int x;
++  for (x=0; x<8; x++)
++  {
++     src[0       ] = (src[0       ] + 2*src[stride  ] + src[stride*2])>>2;
++     src[stride  ] = (src[stride  ] + 2*src[stride*2] + src[stride*3])>>2;
++     src[stride*2] = (src[stride*2] + 2*src[stride*3] + src[stride*4])>>2;
++     src[stride*3] = (src[stride*3] + 2*src[stride*4] + src[stride*5])>>2;
++     src[stride*4] = (src[stride*4] + 2*src[stride*5] + src[stride*6])>>2;
++     src[stride*5] = (src[stride*5] + 2*src[stride*6] + src[stride*7])>>2;
++     src[stride*6] = (src[stride*6] + 2*src[stride*7] + src[stride*8])>>2;
++     src[stride*7] = (src[stride*7] + 2*src[stride*8] + src[stride*9])>>2;
++
++     src++;
++  }
++#endif
++}
++
++static void inline
++deinterlace (struct ng_video_buf *frame)
++{
++  int x, y, bytes = frame->fmt.bytesperline;
++  unsigned char *src;
++
++  for (y = 1; y < frame->fmt.height - 8; y+=8)
++  {
++        for (x = 0; x < bytes; x+=8)
++        {
++            src = frame->data + x + y * bytes;
++            linearBlend(src, bytes);
++        } 
++  }
++
++  emms();
++}
++
++
++static void *
++init (struct ng_video_fmt *out)
++{
++  /* no status info needed */
++  static int dummy; 
++  return &dummy;
++} 
++
++static struct ng_video_buf *
++frame (void *handle, struct ng_video_buf *frame)
++{       
++  deinterlace (frame);
++  return frame;
++}                 
++
++static void
++fini (void *handle)
++{
++  /* nothing to clean up */
++}
++
++/* ------------------------------------------------------------------- */
++
++static struct ng_filter filter = {
++  name:"linear blend",
++  fmts:
++    (1 << VIDEO_GRAY) |
++    (1 << VIDEO_RGB15_NATIVE) |
++    (1 << VIDEO_RGB16_NATIVE) |
++    (1 << VIDEO_BGR24) |
++    (1 << VIDEO_RGB24) |
++    (1 << VIDEO_BGR32) | (1 << VIDEO_RGB32) | (1 << VIDEO_YUV422),
++  init:init,
++  frame:frame,
++  fini:fini,
++};
++
++extern void ng_plugin_init (void);
++void
++ng_plugin_init (void) 
++{
++  ng_filter_register (NG_PLUGIN_MAGIC,__FILE__,&filter);
++}
++
+diff -ruN xawtv-3.82.orig/libng/plugins/linedoubler.c xawtv-3.82/libng/plugins/linedoubler.c
+--- xawtv-3.82.orig/libng/plugins/linedoubler.c	Thu Jan  1 01:00:00 1970
++++ xawtv-3.82/libng/plugins/linedoubler.c	Sun Jan  5 15:06:47 2003
+@@ -0,0 +1,84 @@
++/* 
++ * Simple xawtv deinterlacing plugin - line doubling
++ * 
++ * CAVEATS: Effectively halves framerate and vertical resolution
++ * Framerate problem is to be addressed, vertical resolution problem is
++ * inherent in line doubling.  Use one of the interpolating (or blending, when
++ * we write them) filters.
++ * 
++ * BENEFITS: It's no longer interlaced ;) thats about it.
++ * 
++ * AUTHORS:
++ * Conrad Kreyling <conrad@conrad.nerdland.org>
++ * Patrick Barrett <yebyen@nerdland.org>
++ * 
++ * This is licenced under the GNU GPL until someone tells me I'm stealing code
++ * and can't do that ;) www.gnu.org for any version of the license.
++ *
++ * Based on xawtv-3.67/libng/plugins/flt-nop.c (also GPL)
++ */
++
++
++#include "config.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <pthread.h>
++
++#include "grab-ng.h"
++
++static void inline
++deinterlace(struct ng_video_buf *frame)
++{
++   int x,y;
++   
++   for (y = 1; y < frame->fmt.height; y += 2)
++	  for (x = 0; x < frame->fmt.bytesperline + 1; x++)
++		 frame->data[(y * frame->fmt.bytesperline) + x] = 
++			frame->data[((y - 1) * frame->fmt.bytesperline) + x];
++}
++
++
++static void *init(struct ng_video_fmt *out)
++{
++    /* don't have to carry around status info */
++    static int dummy;
++    return &dummy;
++}
++
++static struct ng_video_buf*
++frame(void *handle, struct ng_video_buf *frame)
++{
++   deinterlace(frame); // In hindsight, we may not have needed the function ;)
++					   // Added clarity when we make it more complicated.
++   return frame;
++}
++
++static void fini(void *handle)
++{
++    /* nothing to clean up */
++}
++
++/* ------------------------------------------------------------------- */
++
++static struct ng_filter filter = {
++    name:    "line doubler deinterlace",
++    fmts:
++    (1 << VIDEO_GRAY)         |
++    (1 << VIDEO_RGB15_NATIVE) |
++    (1 << VIDEO_RGB16_NATIVE) |
++    (1 << VIDEO_BGR24)        |
++    (1 << VIDEO_RGB24)        |
++    (1 << VIDEO_BGR32)        |
++    (1 << VIDEO_RGB32)        |
++    (1 << VIDEO_YUV422),
++    init:    init,
++    frame:   frame,
++    fini:    fini,
++};
++
++extern void ng_plugin_init(void);
++void ng_plugin_init(void)
++{
++    ng_filter_register(NG_PLUGIN_MAGIC,__FILE__,&filter);
++}
