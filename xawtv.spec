@@ -1,5 +1,7 @@
 #
-# _without_lirc	compile without lirc remote control support
+# Conditional build:
+# _without_aalib  - compile without aalib support
+# _without_lirc	  - compile without lirc remote control support
 
 Summary:	Video4Linux Stream Capture Viewer
 Summary(es):	Video4Linux Stream Capture Viewer
@@ -9,7 +11,7 @@ Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
 Version:	3.88
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
@@ -24,15 +26,17 @@ Patch2:		%{name}-fullscreen.patch
 Patch3:		%{name}-deinterlace.patch
 Patch4:		%{name}-libng_fix.patch
 URL:		http://bytesex.org/xawtv/
-BuildRequires:	ncurses-devel >= 5.1
-BuildRequires:	libjpeg-devel
-BuildRequires:	Xaw3d-devel >= 1.5
-BuildRequires:	XFree86-devel
-BuildRequires:	aalib-devel
-BuildRequires:  zvbi-devel
 BuildRequires:	OpenGL-devel
+BuildRequires:	XFree86-devel
+BuildRequires:	Xaw3d-devel >= 1.5
+%{!?_without_aalib:BuildRequires:	aalib-devel}
+BuildRequires:	alsa-lib-devel
+BuildRequires:	libjpeg-devel
+%{!?_without_lirc:BuildRequires:	lirc-devel}
+BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	openmotif-devel
-%{!?_without_lirc:BuildRequires: lirc-devel}
+BuildRequires:	xft-devel
+BuildRequires:  zvbi-devel
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -165,12 +169,14 @@ ASCII.
 %build
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 %configure \
+%{!?_without_aalib:	--enable-aalib} \
+%{?_without_aalib:	--disable-aalib} \
 %{!?_without_lirc:	--enable-lirc} \
 %{?_without_lirc:	--disable-lirc} \
-	--enable-motif \
-	--disable-quicktime \
-	--enable-xfree-ext \
-	--enable-xvideo 
+			--enable-motif \
+			--disable-quicktime \
+			--enable-xfree-ext \
+			--enable-xvideo 
 
 %{__make}
 
@@ -291,7 +297,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/bin/alevtd
 %{_mandir}/man1/alevtd.1*
 
+%if {!?_without_aalib:1}0
 %files ttv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/ttv
 %{_mandir}/man1/ttv.1*
+%endif
