@@ -1,11 +1,10 @@
-diff -urN xawtv-3.48.orig/src/frequencies.c xawtv-3.48/src/frequencies.c
---- xawtv-3.48.orig/src/frequencies.c	Mon May 21 12:27:37 2001
-+++ xawtv-3.48/src/frequencies.c	Tue May 22 23:34:40 2001
-@@ -562,6 +562,104 @@
- };
+diff -urN xawtv-3.62.orig/src/frequencies.c xawtv-3.62/src/frequencies.c
+--- xawtv-3.62.orig/src/frequencies.c	Thu Sep 13 12:45:33 2001
++++ xawtv-3.62/src/frequencies.c	Tue Sep 18 14:10:04 2001
+@@ -1043,6 +1043,104 @@
  
  /* --------------------------------------------------------------------- */
-+
+ 
 +/* PTK (Polska Telewizja Kablowa, Polish Cable Television)  */
 +static struct CHANLIST cable_poland_PTK[] = {
 +    { "S-01",	111250 },
@@ -103,22 +102,23 @@ diff -urN xawtv-3.48.orig/src/frequencies.c xawtv-3.48/src/frequencies.c
 +};
 +
 +/* --------------------------------------------------------------------- */
- /* europe                                                                */
- 
- /* CCIR frequencies */
-@@ -962,6 +1060,7 @@
-     { "france",           secam_france,      CHAN_COUNT(secam_france)      },
++
+ struct CHANLISTS chanlists[] = {
+     { "us-bcast",         ntsc_bcast,        CHAN_COUNT(ntsc_bcast)        },
+     { "us-cable",         ntsc_cable,        CHAN_COUNT(ntsc_cable)        },
+@@ -1059,6 +1157,7 @@
      { "china-bcast",      pal_bcast_cn,      CHAN_COUNT(pal_bcast_cn)      },
      { "southafrica",      pal_bcast_za,      CHAN_COUNT(pal_bcast_za)      },
+     { "argentina",        argentina,         CHAN_COUNT(argentina)         },
 +    { "cable-poland-PTK", cable_poland_PTK,  CHAN_COUNT(cable_poland_PTK)  },
      { NULL, NULL, 0 } /* EOF */
  };
  
-@@ -980,6 +1074,7 @@
-     { 11, "france" },
+@@ -1078,6 +1177,7 @@
      { 12, "china-bcast" },	
      { 13, "southafrica" },
-+    { 14, "cable-poland-PTK" },
+     { 14, "argentina" },
++    { 15, "cable-poland-PTK" },
      { -1, NULL }
  };
  
