@@ -38,7 +38,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	openmotif-devel
 BuildRequires:	xft-devel
-BuildRequires:  zvbi-devel
+BuildRequires:	zvbi-devel
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -171,15 +171,14 @@ ASCII.
 %build
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 %configure \
-%{!?_without_aalib:	--enable-aalib} \
-%{?_without_aalib:	--disable-aalib} \
-%{!?_without_lirc:	--enable-lirc} \
-%{?_without_lirc:	--disable-lirc} \
-			--enable-motif \
-			--disable-quicktime \
-			--enable-xfree-ext \
-			--enable-xvideo 
-
+	%{!?_without_aalib:--enable-aalib} \
+	%{?_without_aalib:--disable-aalib} \
+	%{!?_without_lirc:--enable-lirc} \
+	%{?_without_lirc:--disable-lirc} \
+	--enable-motif \
+	--disable-quicktime \
+	--enable-xfree-ext \
+	--enable-xvideo
 %{__make}
 
 %{__make} -C %{font_dir}
