@@ -1,0 +1,10 @@
+--- xawtv-3.90/x11/Subdir.mk.orig	2003-03-28 11:52:49.000000000 +0000
++++ xawtv-3.90/x11/Subdir.mk	2003-11-09 22:40:54.000000000 +0000
+@@ -170,5 +170,5 @@
+ 	iconv -f iso-8859-1 -t utf-8 < $< > $@
+ 
+ install-motv-%:
+-	$(INSTALL_DIR) $(resdir)/$*/app-defaults
+-	$(INSTALL_DATA) x11/MoTV.$*.ad $(resdir)/$*/app-defaults/MoTV
++	$(INSTALL_DIR) $(resdir)/app-defaults/$*
++	$(INSTALL_DATA) x11/MoTV.$*.ad $(resdir)/app-defaults/$*/MoTV
