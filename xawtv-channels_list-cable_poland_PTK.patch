@@ -1,7 +1,7 @@
 diff -urN xawtv-3.48.orig/src/frequencies.c xawtv-3.48/src/frequencies.c
 --- xawtv-3.48.orig/src/frequencies.c	Mon May 21 12:27:37 2001
 +++ xawtv-3.48/src/frequencies.c	Tue May 22 23:34:40 2001
-@@ -562,6 +562,99 @@
+@@ -562,6 +562,104 @@
  };
  
  /* --------------------------------------------------------------------- */
@@ -94,14 +94,19 @@ diff -urN xawtv-3.48.orig/src/frequencies.c xawtv-3.48/src/frequencies.c
 +    { "K-54",	735250 },
 +    { "K-55",	743250 },
 +    { "K-56",	751250 },
-+    { "K-57",	759250 }
++    { "K-57",	759250 },
++    { "K-58",	767250 },
++    { "K-59",	775250 },
++    { "K-60",	783250 },
++    { "K-61",	791250 },
++    { "K-62",	799250 }
 +};
 +
 +/* --------------------------------------------------------------------- */
  /* europe                                                                */
  
  /* CCIR frequencies */
-@@ -962,6 +1055,7 @@
+@@ -962,6 +1060,7 @@
      { "france",           secam_france,      CHAN_COUNT(secam_france)      },
      { "china-bcast",      pal_bcast_cn,      CHAN_COUNT(pal_bcast_cn)      },
      { "southafrica",      pal_bcast_za,      CHAN_COUNT(pal_bcast_za)      },
