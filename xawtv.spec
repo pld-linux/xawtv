@@ -1,8 +1,8 @@
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
-Version:	3.30
-Release:	2
+Version:	3.34
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
