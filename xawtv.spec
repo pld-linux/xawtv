@@ -1,10 +1,9 @@
 #
 # Conditional build:
-# _without_aalib	- compile without aalib support
-# _without_lirc		- compile without lirc remote control support
-
+%bcond_without	aalib	# compile without aalib support
+%bcond_without	lirc	# compile without lirc remote control support
+#
 Summary:	Video4Linux Stream Capture Viewer
-Summary(es):	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuksa
 Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
 Summary(ru):	Просмотр и запись видеопотоков
@@ -25,23 +24,24 @@ Source5:	http://bytesex.org/xawtv/tv-fonts-1.0.tar.bz2
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-channels_list-cable_poland_PTK.patch
 Patch2:		%{name}-fullscreen.patch
-Patch3:		%{name}-deinterlace.patch
-Patch4:		%{name}-libng_fix.patch
+Patch3:		%{name}-libng_fix.patch
+Patch4:		%{name}-appdefsdir.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	Xaw3d-devel >= 1.5
-%{!?_without_aalib:BuildRequires:	aalib-devel}
+%{?with_aalib:BuildRequires:	aalib-devel}
 BuildRequires:	alsa-lib-devel
 BuildRequires:	libjpeg-devel
-%{!?_without_lirc:BuildRequires:	lirc-devel}
+%{?with_lirc:BuildRequires:	lirc-devel}
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	openmotif-devel
 BuildRequires:	xft-devel
 BuildRequires:	zvbi-devel
-Prereq:		/usr/X11R6/bin/mkfontdir
+Requires(post,postun):	fontpostinst
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_appdefsdir	/usr/X11R6/lib/X11/app-defaults
 %define 	font_dir 	tv-fonts-1.0
 
 %description
@@ -170,15 +170,17 @@ ASCII.
 
 %build
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
+# MMX support in linear-blend plugin is chosen at compile time - athlon only
 %configure \
-	%{!?_without_aalib:--enable-aalib} \
-	%{?_without_aalib:--disable-aalib} \
-	%{!?_without_lirc:--enable-lirc} \
-	%{?_without_lirc:--disable-lirc} \
+	%{!?with_aalib:--disable-aalib} \
+	%{!?with_lirc:--disable-lirc} \
 	--enable-motif \
 	--disable-quicktime \
 	--enable-xfree-ext \
-	--enable-xvideo
+	--enable-xvideo \
+%ifnarch athlon
+	--disable-mmx
+%endif
 %{__make}
 
 %{__make} -C %{font_dir}
@@ -187,7 +189,7 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_bindir} \
-	$RPM_BUILD_ROOT/usr/X11R6/lib/X11{,/pl}/app-defaults \
+	$RPM_BUILD_ROOT%{_appdefsdir}/pl \
 	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT%{_fontsdir}/misc
@@ -196,23 +198,21 @@ install -d $RPM_BUILD_ROOT%{_bindir} \
 	DESTDIR="$RPM_BUILD_ROOT" \
 	SUID_ROOT=""
 
-install %{SOURCE1} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults/Xawtv
-install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
-install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
+install %{SOURCE1} $RPM_BUILD_ROOT%{_appdefsdir}/pl/Xawtv
+install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia
+install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia
 install %{SOURCE4} .
 
-cp %{font_dir}/*.gz $RPM_BUILD_ROOT%{_fontsdir}/misc/
-
-%post
-cd %{_fontsdir}
-/usr/X11R6/bin/mkfontdir
-
-%postun
-cd %{_fontsdir}
-/usr/X11R6/bin/mkfontdir
+install %{font_dir}/*.gz $RPM_BUILD_ROOT%{_fontsdir}/misc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+fontpostinst misc
+
+%postun
+fontpostinst misc
 
 %files
 %defattr(644,root,root,755)
@@ -231,16 +231,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/v4l-info
 %attr(755,root,root) %{_bindir}/motv
 %attr(755,root,root) %{_bindir}/mtt
-%{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}
 
-/usr/X11R6/lib/X11/app-defaults/Xawtv
-/usr/X11R6/lib/X11/app-defaults/MoTV
-/usr/X11R6/lib/X11/app-defaults/mtt
-%lang(pl) /usr/X11R6/lib/X11/pl/app-defaults/Xawtv
-%lang(it) /usr/X11R6/lib/X11/it/app-defaults/MoTV
-%lang(fr) /usr/X11R6/lib/X11/fr/app-defaults/MoTV
-%lang(de) /usr/X11R6/lib/X11/de/app-defaults/MoTV
-%lang(de) /usr/X11R6/lib/X11/de_DE.UTF-8/app-defaults/MoTV
+%{_appdefsdir}/Xawtv
+%{_appdefsdir}/MoTV
+%{_appdefsdir}/mtt
+%lang(pl) %{_appdefsdir}/pl/Xawtv
+%lang(de) %{_appdefsdir}/de/MoTV
+%lang(fr) %{_appdefsdir}/fr/MoTV
+# XXX: missing dirs (to be added to XFree86-libs)
+%lang(de) %{_appdefsdir}/de_DE.UTF-8/MoTV
+%lang(it) %{_appdefsdir}/it/MoTV
 
 %{_applnkdir}/Multimedia/*
 
@@ -248,6 +249,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_fontsdir}/misc/*
 
 %{_mandir}/man1/fbtv.1*
+%{_mandir}/man1/v4l-info.1*
 %{_mandir}/man1/v4lctl.1*
 %{_mandir}/man1/xawtv-remote.1*
 %{_mandir}/man1/xawtv.1*
@@ -298,7 +300,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/bin/alevtd
 %{_mandir}/man1/alevtd.1*
 
-%if %{!?_without_aalib:1}0
+%if %{with aalib}
 %files ttv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/ttv
