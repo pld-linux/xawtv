@@ -6,7 +6,7 @@ Release:	1
 License:	GNU 
 Group:		X11/Applications
 Group(pl):	X11/Aplikacje
-Source0:	http://www.in-berlin.de/User/kraxel/v4l/%{name}-%{version}.tar.gz
+Source0:	http://me.in-berlin.de/~kraxel/v4l/%{name}-%{version}.tar.gz
 Source1:	Xawtv.ad-pl
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	libjpeg-devel
