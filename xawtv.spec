@@ -13,13 +13,13 @@ Version:	3.91
 Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
+Source0:	http://dl.bytesex.org/releases/xawtv/%{name}_%{version}.tar.gz
 # Source0-md5:	fe4d6a482cc199fa36065cd1b6ea48a8
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
 Source4:	%{name}-conf_example-PTK
-Source5:	http://bytesex.org/xawtv/tv-fonts-1.0.tar.bz2
+Source5:	http://dl.bytesex.org/tv-fonts/tv-fonts-1.0.tar.bz2
 # Source5-md5:	46c68df4976306e25a1526a762371770
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-channels_list-cable_poland_PTK.patch
@@ -190,19 +190,16 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_bindir} \
-	$RPM_BUILD_ROOT%{_appdefsdir}/pl \
-	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
-	$RPM_BUILD_ROOT/usr/bin \
-	$RPM_BUILD_ROOT%{_fontsdir}/misc
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_desktopdir},%{_fontsdir}/misc} \
+	$RPM_BUILD_ROOT%{_appdefsdir}/pl
 
 %{__make} install \
 	DESTDIR="$RPM_BUILD_ROOT" \
 	SUID_ROOT=""
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_appdefsdir}/pl/Xawtv
-install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia
-install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia
+install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE4} .
 
 install %{font_dir}/*.gz $RPM_BUILD_ROOT%{_fontsdir}/misc
@@ -245,7 +242,7 @@ fontpostinst misc
 %lang(de) %{_appdefsdir}/de_DE.UTF-8/MoTV
 %lang(it) %{_appdefsdir}/it/MoTV
 
-%{_applnkdir}/Multimedia/*
+%{_desktopdir}/*.desktop
 
 %{_datadir}/%{name}
 %{_fontsdir}/misc/*
