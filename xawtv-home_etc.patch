@@ -1,18 +1,19 @@
-diff -urN xawtv-3.12.orig/src/Makefile.in xawtv-3.12/src/Makefile.in
---- xawtv-3.12.orig/src/Makefile.in	Mon Apr  3 20:17:02 2000
-+++ xawtv-3.12/src/Makefile.in	Fri Apr 21 15:12:49 2000
-@@ -24,7 +24,7 @@
- PROGS=xawtv xawtv-remote v4l-conf v4lctl streamer xvideo fbtv
+diff -Nru xawtv-3.20/src/Makefile.in xawtv-3.20.new/src/Makefile.in
+--- xawtv-3.20/src/Makefile.in	Tue Sep  5 03:18:56 2000
++++ xawtv-3.20.new/src/Makefile.in	Tue Sep  5 03:20:13 2000
+@@ -33,7 +33,8 @@
+ endif
  
- COMMON_OBJS= sound.o grab.o grab-v4l.o grab-v4l2.o colorspace.o webcam.o \
--	frequencies.o writefile.o commands.o parseconfig.o mjpeg.o
-+	frequencies.o writefile.o commands.o parseconfig.o mjpeg.o userdir.o
+ COMMON_OBJS= sound.o grab.o grab-v4l.o grab-v4l2.o grab-bsd.o colorspace.o \
+-	webcam.o frequencies.o writefile.o commands.o parseconfig.o mjpeg.o
++	webcam.o frequencies.o writefile.o commands.o parseconfig.o mjpeg.o \
++	userdir.o
  CAPTURE_OBJS= capture.o writeavi.o
  LIRC_OBJS=lirc.o
  
-diff -urN xawtv-3.12.orig/src/channel.c xawtv-3.12/src/channel.c
---- xawtv-3.12.orig/src/channel.c	Sat Mar 25 16:33:35 2000
-+++ xawtv-3.12/src/channel.c	Fri Apr 21 14:58:29 2000
+diff -Nru xawtv-3.20/src/channel.c xawtv-3.20.new/src/channel.c
+--- xawtv-3.20/src/channel.c	Tue Sep  5 03:18:56 2000
++++ xawtv-3.20.new/src/channel.c	Tue Sep  5 03:18:32 2000
 @@ -41,6 +41,7 @@
  #include "frequencies.h"
  #include "sound.h"
@@ -21,7 +22,7 @@ diff -urN xawtv-3.12.orig/src/channel.c xawtv-3.12/src/channel.c
  
  /* ----------------------------------------------------------------------- */
  /* misc common stuff, not only channel related                             */ 
-@@ -327,8 +328,21 @@
+@@ -344,8 +345,21 @@
      char **list,*val;
      int  i;
  
@@ -44,7 +45,7 @@ diff -urN xawtv-3.12.orig/src/channel.c xawtv-3.12/src/channel.c
      if (0 == cfg_parse_file(filename))
  	have_config = 1;
  
-@@ -445,8 +459,21 @@
+@@ -468,8 +482,21 @@
      FILE *fp;
      int i;
  
@@ -68,9 +69,9 @@ diff -urN xawtv-3.12.orig/src/channel.c xawtv-3.12/src/channel.c
  
      /* delete old backup */
      unlink(filename2);
-diff -urN xawtv-3.12.orig/src/userdir.c xawtv-3.12/src/userdir.c
---- xawtv-3.12.orig/src/userdir.c	Thu Jan  1 01:00:00 1970
-+++ xawtv-3.12/src/userdir.c	Sun Mar  5 02:43:47 2000
+diff -Nru xawtv-3.20/src/userdir.c xawtv-3.20.new/src/userdir.c
+--- xawtv-3.20/src/userdir.c	Thu Jan  1 01:00:00 1970
++++ xawtv-3.20.new/src/userdir.c	Tue Sep  5 03:18:32 2000
 @@ -0,0 +1,380 @@
 +// $Id$
 +#include "userdir.h"
@@ -452,9 +453,9 @@ diff -urN xawtv-3.12.orig/src/userdir.c xawtv-3.12/src/userdir.c
 +}
 +
 +/******************************************************************************/
-diff -urN xawtv-3.12.orig/src/userdir.h xawtv-3.12/src/userdir.h
---- xawtv-3.12.orig/src/userdir.h	Thu Jan  1 01:00:00 1970
-+++ xawtv-3.12/src/userdir.h	Sun Mar  5 02:43:47 2000
+diff -Nru xawtv-3.20/src/userdir.h xawtv-3.20.new/src/userdir.h
+--- xawtv-3.20/src/userdir.h	Thu Jan  1 01:00:00 1970
++++ xawtv-3.20.new/src/userdir.h	Tue Sep  5 03:18:32 2000
 @@ -0,0 +1,153 @@
 +// $Id$
 +#ifndef USERDIR__H
@@ -609,5 +610,3 @@ diff -urN xawtv-3.12.orig/src/userdir.h xawtv-3.12/src/userdir.h
 +int forcechdircfv (struct cfv *CFV, mode_t mode);
 +
 +#endif
-Binary files xawtv-3.12.orig/webcam/webcam and xawtv-3.12/webcam/webcam differ
-Binary files xawtv-3.12.orig/webcam/webcam.o and xawtv-3.12/webcam/webcam.o differ
