@@ -1,12 +1,14 @@
 diff -Nru xawtv-3.38/src/Makefile.in xawtv-3.38.new/src/Makefile.in
 --- xawtv-3.38/src/Makefile.in	Sun Feb 25 20:21:21 2001
 +++ xawtv-3.38.new/src/Makefile.in	Sun Mar 11 21:43:06 2001
-@@ -39,7 +39,7 @@
+@@ -39,8 +39,8 @@
  
  PROGS=xawtv xawtv-remote v4lctl streamer xvideo rootv scantv @PROGS@ @MOTIF@
  
--COMMON_OBJS=sound.o webcam.o frequencies.o commands.o parseconfig.o capture.o ../libng/libng.a
-+COMMON_OBJS=sound.o webcam.o frequencies.o commands.o parseconfig.o capture.o ../libng/libng.a userdir.o
+-COMMON_OBJS=sound.o webcam.o frequencies.o commands.o parseconfig.o \
+-	capture.o ../libng/libng.a
++COMMON_OBJS=sound.o webcam.o frequencies.o commands.o parseconfig.o \
++	capture.o ../libng/libng.a userdir.o
  LIRC_OBJS=lirc.o
  
  XAWTV_OBJS=  main.o xt.o toolbox.o conf.o x11.o xv.o complete.o wmhooks.o \
