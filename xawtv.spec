@@ -298,7 +298,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/bin/alevtd
 %{_mandir}/man1/alevtd.1*
 
-%if {!?_without_aalib:1}0
+%if %{!?_without_aalib:1}0
 %files ttv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/ttv
