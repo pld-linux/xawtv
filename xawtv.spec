@@ -9,7 +9,7 @@ Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
 Version:	3.74
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
@@ -163,7 +163,8 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 %{?_without_lirc:	--disable-lirc} \
 	--disable-quicktime \
 	--enable-xfree-ext \
-	--enable-xvideo
+	--enable-xvideo \
+	--disable-alsa
 
 %{__make}
 
