@@ -1,0 +1,11 @@
+diff -Nru xawtv-3.86.orig/libng/grab-ng.h xawtv-3.86/libng/grab-ng.h
+--- xawtv-3.86.orig/libng/grab-ng.h	Fri Feb 14 15:14:07 2003
++++ xawtv-3.86/libng/grab-ng.h	Fri Apr  4 12:29:27 2003
+@@ -51,6 +51,7 @@
+ #define VIDEO_RGB32         10  /* -rgb-rgb-rgb (BE) */
+ #define VIDEO_LUT2          11  /* lookup-table 2 byte depth */
+ #define VIDEO_LUT4          12  /* lookup-table 4 byte depth */
++#define VIDEO_YUV422        13
+ #define VIDEO_YUYV	    13  /* 4:2:2 */
+ #define VIDEO_YUV422P       14  /* YUV 4:2:2 (planar) */
+ #define VIDEO_YUV420P	    15  /* YUV 4:2:0 (planar) */
