@@ -2,7 +2,7 @@
 Name=XawTV (XVideo disabled)
 Comment=TV Tuner Program (with XVideo disabled --- allows capture).
 Comment[pl]=Program obsługujący tuner TV (z wyłączonym XVideo --- umożliwia to przechwytywanie obrazu).
-Exec=xawtv
+Exec=xawtv -noxv
 Icon=xawtv.xpm
 MiniIcon=xawtv-mini.xpm
 Terminal=0
