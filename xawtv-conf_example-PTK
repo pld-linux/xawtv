@@ -1,0 +1,274 @@
+[global]
+fullscreen = 768 x 576
+freqtab = cable-poland-PTk
+pixsize = 128 x 96
+pixcols = 1
+jpeg-quality = 75
+mjpeg-quality = 75
+keypad-ntsc = no
+osd = yes
+
+# [Station name]
+# capture = overlay | grabdisplay | on | off
+# input = Television | Composite1 | S-Video | ...
+# norm = PAL | NTSC | SECAM | ... 
+# channel = #
+# fine = # (-128..+127)
+# key = keysym | modifier+keysym
+# color = #
+# bright = #
+# hue = #
+# contrast = #
+
+[defaults]
+norm = PAL
+capture = over
+input = Television
+bright = 41623
+
+[TVE]
+channel = S-01
+
+[Canal+]
+channel = S-02
+
+[HBO]
+channel = S-03
+
+[TV Niepokalanów]
+channel = S-04
+
+[TV 4 pl]
+channel = S-05
+
+[TVN]
+channel = S-06
+
+[PTK Przegl±darka]
+channel = S-07
+
+[TV Ostankino]
+channel = S-08
+
+[Polsat]
+channel = K-06
+
+[TVP 1]
+channel = K-07
+
+[PTK 1 (radio Pogoda)]
+channel = K-08
+
+[TVP 2]
+channel = K-09
+
+[WOT 51]
+channel = K-10
+
+[<zastrze¿ony> (1)]
+channel = K-11
+
+[TV Polonia]
+channel = K-12
+
+[Pro 7]
+channel = S-09
+
+[ARD 1]
+channel = S-10
+
+[MTV Polska]
+channel = S-11
+
+[<> (1)]
+channel = S-12
+
+[DSF]
+channel = S-13
+
+[Polonia 1 (1)]
+channel = S-14
+
+[RTL 7]
+channel = S-15
+
+[NBC]
+channel = S-16
+
+[TV5]
+channel = S-17
+
+[Muzzik]
+channel = S-18
+
+[Wizja Sport]
+channel = S-19
+
+[Pogoda/Travel]
+channel = S-20
+
+[BET International]
+channel = S-21
+
+[VOX]
+channel = S-22
+
+[BBC World]
+channel = S-23
+
+[SAT 1]
+channel = S-24
+
+[EuroNews]
+channel = S-25
+
+[VIVA]
+channel = S-26
+
+[CNN]
+channel = S-27
+
+[RTL]
+channel = S-28
+
+[DW]
+channel = S-29
+
+[Polonia 1 (2)]
+channel = S-30
+
+[BBC Prime]
+channel = S-31
+
+[RAI Uno]
+channel = S-32
+
+[EuroSport pl/en]
+channel = S-33
+
+[TV 4 fr]
+channel = S-34
+
+[Discovery]
+channel = S-35
+
+[Planete]
+channel = S-36
+
+[VIVA II]
+channel = S-37
+
+[Bloomberg]
+channel = S-38
+
+[Pogoda/Nat.Geogr.]
+channel = K-21
+
+[Cartoon/TCM]
+channel = K-22
+
+[EuroSport pl/en/d]
+channel = K-23
+
+[Fashion TV]
+channel = K-24
+
+[Fox Kids]
+channel = K-25
+
+[Romantica]
+channel = K-26
+
+[<> (2)]
+channel = K-27
+
+[Wizja Jeden]
+channel = K-28
+
+[Hallmark]
+channel = K-29
+
+[<dla dekodera> (1)]
+channel = K-30
+
+[<dla dekodera> (2)]
+channel = K-31
+
+[ONYX]
+channel = K-32
+
+[CNBC]
+channel = K-33
+
+[<dla video> (1)]
+channel = K-34
+
+[<zastrze¿ony> (2)]
+channel = K-35
+
+[<dla video> (2)]
+channel = K-36
+
+[Polsat 2]
+channel = K-37
+
+[RTL 2]
+channel = K-38
+
+[Komedia]
+channel = K-39
+
+[Smyk]
+channel = K-40
+
+[Formu³a 1]
+channel = K-41
+
+[Dla Ciebie]
+channel = K-42
+
+[Info/Dokumnet]
+channel = K-43
+
+[Muzyczny Relaks]
+channel = K-44
+
+[RAI Due]
+channel = K-45
+
+[Pogoda/Travel]
+channel = K-46
+
+[Animal Planet]
+channel = K-47
+
+[Le Cinema]
+channel = K-48
+
+[M 6]
+channel = K-49
+
+[<> (3)]
+channel = K-50
+
+[<zastrze¿ony> (3)]
+channel = K-51
+
+[Reality TV]
+channel = K-52
+
+[Sky News]
+channel = K-53
+
+[EDTV Dubai]
+channel = K-54
+
+[BBC World]
+channel = K-55
+
+[E! Entertainment]
+channel = K-56
+
+[VH 1]
+channel = K-57
+
