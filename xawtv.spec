@@ -47,17 +47,17 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 A collection tools for video4linux:
- - xawtv - X11 TV application
- - fbtv - console TV application
- - streamer - capture tool (images / movies)
- - v4lctl - command line tool to control v4l devices
+- xawtv - X11 TV application
+- fbtv - console TV application
+- streamer - capture tool (images / movies)
+- v4lctl - command line tool to control v4l devices
 
 %description -l pl
 Kolekcja narzЙdzi video dla Linuksa
- - xawtv - X11 aplikacje TV
- - fbtv - aplikacje TV pod konsolЙ
- - streamer - narzЙdzie do przechwytywanie obrazu (zdjЙcia / filmy)
- - v4lctl - narzЙdzie do kontroli urz╠dzeЯ v4l
+- xawtv - X11 aplikacje TV
+- fbtv - aplikacje TV pod konsolЙ
+- streamer - narzЙdzie do przechwytywanie obrazu (zdjЙcia / filmy)
+- v4lctl - narzЙdzie do kontroli urz╠dzeЯ v4l
 
 %description -l pt_BR
 Uma coleГЦo de ferramentas para o video4linux:
@@ -70,20 +70,20 @@ Uma coleГЦo de ferramentas para o video4linux:
 %description -l ru
 Набор инструментов для работы с видеопотоками по протоколу
 video4linux:
- - xawtv - интерфейс под X11
- - fbtv - консольный интерфейс
- - streamer - инструмент для записи (изображение/фильм)
- - v4lctl - инструмент командной строки для управления v4l устройствами
+- xawtv - интерфейс под X11
+- fbtv - консольный интерфейс
+- streamer - инструмент для записи (изображение/фильм)
+- v4lctl - инструмент командной строки для управления v4l устройствами
 
 Включает также основанную на ncurses программу работы с радио.
 
 %description -l uk
 Наб╕р ╕нструмент╕в для роботи з в╕деопотоками по протоколу
 video4linux:
- - xawtv - ╕нтерфейс п╕д X11
- - fbtv - консольний ╕нтерфейс
- - streamer - ╕нструмент для запису (зображення/ф╕льм)
- - v4lctl - ╕нструмент командного рядка для управл╕ння v4l пристроями
+- xawtv - ╕нтерфейс п╕д X11
+- fbtv - консольний ╕нтерфейс
+- streamer - ╕нструмент для запису (зображення/ф╕льм)
+- v4lctl - ╕нструмент командного рядка для управл╕ння v4l пристроями
 
 Включа╓ також основану на ncurses програму роботи з рад╕о.
 
@@ -110,32 +110,31 @@ Group:		X11/Applications
 %description misc
 This package has a few tools you might find useful. They have not to
 do very much to do with xawtv. I've used/wrote them for debugging:
- - propwatch - monitors properties of X11 windows. If you want to know
-   how to keep track of xawtv's _XAWTV_STATION property, look at this.
- - dump-mixers - dump mixer settings to stdout
- - record - console sound recorder. Has a simple input level meter
-   which might be useful to trouble shoot sound problems.
- - showriff - display the structure of RIFF files (avi, WAV).
+- propwatch - monitors properties of X11 windows. If you want to know
+  how to keep track of xawtv's _XAWTV_STATION property, look at this.
+- dump-mixers - dump mixer settings to stdout
+- record - console sound recorder. Has a simple input level meter
+  which might be useful to trouble shoot sound problems.
+- showriff - display the structure of RIFF files (avi, WAV).
 
 %description misc -l pl
 Ten pakiet zawiera sporo u©ytecznych narzЙdzi. Nie maj╠ wiele
 wspСlnego z xawtv. ZostaЁy napisane w celu debagowania xawtv.
- - propwatch - monitor ustawieЯ
- - dump-mixers - "Dump" mixer
- - record - Rejestrator d╪wiЙku.
- - showriff - Wy╤wietla strukturЙ plikСw RIFF (avi, WAV).
+- propwatch - monitor ustawieЯ
+- dump-mixers - "Dump" mixer
+- record - Rejestrator d╪wiЙku.
+- showriff - Wy╤wietla strukturЙ plikСw RIFF (avi, WAV).
 
 %description misc -l pt_BR
 Ferramentas adicionais para depuraГЦo dos componentes do pacote xawtv:
-
- - propwatch - monitora as propriedades de janelas X11. Se vocЙ quiser
-   saber como monitorar a propriedade _XAWTV_STATION use esta ferramenta.
- - dump-mixers - apresenta as configuraГУes do misturador na saМda
-   padrЦo.
- - record - gravador de som para o console. Tem um medidor de nМvel de
-   entrada que deve ser Зtil para auxiliar na resoluГЦo de problemas de
-   som.
- - showriff - mostra a estrutura de arquivos RIFF (avi, WAV).
+- propwatch - monitora as propriedades de janelas X11. Se vocЙ quiser
+  saber como monitorar a propriedade _XAWTV_STATION use esta ferramenta.
+- dump-mixers - apresenta as configuraГУes do misturador na saМda
+  padrЦo.
+- record - gravador de som para o console. Tem um medidor de nМvel de
+  entrada que deve ser Зtil para auxiliar na resoluГЦo de problemas de
+  som.
+- showriff - mostra a estrutura de arquivos RIFF (avi, WAV).
 
 %package alevtd
 Summary:	HTTP daemon for alevt teletext decoder
