@@ -20,17 +20,17 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 A collection tools for video4linux:
- * xawtv    - X11 TV application
- * fbtv     - console TV application
- * streamer - capture tool (images / movies)
- * v4lctl   - command line tool to control v4l devices
+ - xawtv - X11 TV application
+ - fbtv - console TV application
+ - streamer - capture tool (images / movies)
+ - v4lctl - command line tool to control v4l devices
 
 %description -l pl
 Kolekcja narzêdzi video dla Linuxa
- * xawtv    - X11 aplikacje TV
- * fbtv     - aplikacje TV pod konsolê
- * streamer - narzêdzie do przechwytywanie obrazu (zdjêcia / filmy)
- * v4lctl   - narzêdzie do kontroli urz±dzeñ v4l
+ - xawtv - X11 aplikacje TV
+ - fbtv - aplikacje TV pod konsolê
+ - streamer - narzêdzie do przechwytywanie obrazu (zdjêcia / filmy)
+ - v4lctl - narzêdzie do kontroli urz±dzeñ v4l
 
 %package radio
 Summary:	radio
@@ -51,25 +51,22 @@ Group:		X11/Applications
 Group(pl):	X11/Aplikacje
 
 %description misc
-This package has a few tools you might find useful.  They
-have not to do very much to do with xawtv.  I've used/wrote
-them for debugging:
- * propwatch   - monitors properties of X11 windows.  If you
-                 want to know how to keep track of xawtv's
-                 _XAWTV_STATION property, look at this.
- * dump-mixers - dump mixer settings to stdout
- * record      - console sound recorder.  Has a simple input
-                 level meter which might be useful to trouble
-                 shoot sound problems.
- * showriff    - display the structure of RIFF files (avi, wav).
+This package has a few tools you might find useful. They have not to
+do very much to do with xawtv. I've used/wrote them for debugging:
+ - propwatch - monitors properties of X11 windows. If you want to know
+   how to keep track of xawtv's _XAWTV_STATION property, look at this.
+ - dump-mixers - dump mixer settings to stdout
+ - record - console sound recorder. Has a simple input level meter
+   which might be useful to trouble shoot sound problems.
+ - showriff - display the structure of RIFF files (avi, wav).
 
 %description -l pl misc
-Ten pakiet zawiera sporo u¿ytecznych narzêdzi. Nie maj± wiele wspólnego z
-xawtv. Zosta³y napisane w celu debagowania xawtv.
- * propwatch   -  monitor ustawieñ
- * dump-mixers - "Dump" mixer
- * record      - Rejestrator d¼wiêku.
- * showriff    - Wy¶wietla strukturê plików RIFF (avi, wav).
+Ten pakiet zawiera sporo u¿ytecznych narzêdzi. Nie maj± wiele
+wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
+ - propwatch - monitor ustawieñ
+ - dump-mixers - "Dump" mixer
+ - record - Rejestrator d¼wiêku.
+ - showriff - Wy¶wietla strukturê plików RIFF (avi, wav).
 
 %prep
 %setup -q
@@ -83,7 +80,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/{%{_prefix}/bin,%{_mandir}/man1} \
+install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults
 
 make ROOT="$RPM_BUILD_ROOT" SUID_ROOT="" install
