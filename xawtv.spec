@@ -2,7 +2,7 @@ Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.19
-Release:	1
+Release:	2
 License:	GNU 
 Group:		X11/Applications
 Group(pl):	X11/Aplikacje
@@ -69,6 +69,19 @@ wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
  - record - Rejestrator d¼wiêku.
  - showriff - Wy¶wietla strukturê plików RIFF (avi, wav).
 
+%package alevtd
+Summary:	HTTP daemon for alevt teletext decoder
+Summary(pl):	Daemon HTTP dla dekodera teletekstu alevt
+Group:		Daemons
+Group(pl):	Serwery
+Requires:	alevt
+
+%description alevtd
+HTTP daemon for alevt teletext decoder
+
+%description -l pl alevtd
+Daemon HTTP dla dekodera teletekstu alevt
+
 %prep
 %setup -q
 %patch0 -p1
@@ -84,12 +97,15 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
-	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia
+	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
+	$RPM_BUILD_ROOT/usr/bin
 
 %{__make} ROOT="$RPM_BUILD_ROOT" SUID_ROOT="" install
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
 install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
+
+install http/alevtd $RPM_BUILD_ROOT/usr/bin
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man1/* \
 	README Changes COPYING Programming-FAQ Trouble-Shooting \
@@ -120,6 +136,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/v4lctl
 %attr(755,root,root) %{_bindir}/rootv
 %attr(755,root,root) %{_bindir}/webcam
+%attr(755,root,root) %{_bindir}/scantv
 
 %{_libdir}/X11/app-defaults/Xawtv
 %lang(pl) %{_libdir}/X11/pl/app-defaults/Xawtv
@@ -149,3 +166,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/showriff
 %{_mandir}/man1/propwatch.1*
 %{_mandir}/man1/showriff.1*
+
+%files alevtd
+%defattr(644,root,root,755)
+%attr(755,root,root) /usr/bin/alevtd
