@@ -2,12 +2,13 @@ Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.17
-Release:	2
+Release:	3
 License:	GNU 
 Group:		X11/Applications
 Group(pl):	X11/Aplikacje
 Source0:	http://me.in-berlin.de/~kraxel/v4l/%{name}_%{version}.tar.gz
 Source1:	Xawtv.ad-pl
+Source2:	xawtv.desktop
 Patch0:		xawtv-home_etc.patch
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	libjpeg-devel
@@ -74,19 +75,21 @@ wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
 
 %build
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
-%configure #\
-	#--enable-lirc
+%configure \
+	--enable-lirc
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
-	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults
+	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
+	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia
 
 %{__make} ROOT="$RPM_BUILD_ROOT" SUID_ROOT="" install
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
+install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man1/* \
 	README Changes COPYING Programming-FAQ Trouble-Shooting \
@@ -120,6 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_libdir}/X11/app-defaults/Xawtv
 %lang(pl) %{_libdir}/X11/pl/app-defaults/Xawtv
+%{_applnkdir}/Multimedia/*
 
 %{_libdir}/X11/fonts/misc/*
 
