@@ -1,11 +1,11 @@
 #
-# _with_lirc	compile with lirc remote control support
+# _without_lirc	compile without lirc remote control support
 
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
-Version:	3.62
-Release:	2
+Version:	3.64
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
@@ -120,9 +120,11 @@ Program do obs³ugi tunera TV wy¶wietlaj±cy obraz przy u¿yciu znaków ASCII.
 %build
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 %configure2_13 \
-%{!?_with_lirc:	--disable-lirc} \
+%{!?_without_lirc:	--enable-lirc} \
+%{?_without_lirc:	--disable-lirc} \
 	--disable-quicktime \
-	--enable-xfree-ext
+	--enable-xfree-ext \
+	--enable-xvideo
 
 %{__make} -C src Xawtv.h
 %{__make}
