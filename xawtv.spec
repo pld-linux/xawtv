@@ -92,7 +92,7 @@ Daemon HTTP dla dekodera teletekstu alevt
 %patch0 -p1
 
 %build
-CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
+CPPFLAGS="-I/usr/include/ncurses"
 %configure \
 	--enable-lirc
 %{__make}
@@ -105,15 +105,16 @@ install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
 	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
 	$RPM_BUILD_ROOT/usr/bin
 
-%{__make} ROOT="$RPM_BUILD_ROOT" SUID_ROOT="" install
+%{__make} install \
+	ROOT="$RPM_BUILD_ROOT" \
+	SUID_ROOT=""
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
 install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 
 install http/alevtd $RPM_BUILD_ROOT/usr/bin
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man1/* \
-	README Changes COPYING Programming-FAQ Trouble-Shooting \
+gzip -9nf README Changes COPYING Programming-FAQ Trouble-Shooting \
 	Sound-FAQ README.lirc README.bttv UPDATE_TO_v3.0 tools/README \
 	$RPM_BUILD_ROOT%{_libdir}/X11/fonts/misc/*
 
