@@ -3,7 +3,7 @@
 
 Summary:	Video4Linux Stream Capture Viewer
 Summary(es):	Video4Linux Stream Capture Viewer
-Summary(pl):	Aplikacje video dla Linuxa
+Summary(pl):	Aplikacje video dla Linuksa
 Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
 Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
@@ -42,7 +42,7 @@ A collection tools for video4linux:
  - v4lctl - command line tool to control v4l devices
 
 %description -l pl
-Kolekcja narzЙdzi video dla Linuxa
+Kolekcja narzЙdzi video dla Linuksa
  - xawtv - X11 aplikacje TV
  - fbtv - aplikacje TV pod konsolЙ
  - streamer - narzЙdzie do przechwytywanie obrazu (zdjЙcia / filmy)
