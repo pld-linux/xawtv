@@ -1,7 +1,7 @@
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
-Version:	3.47
+Version:	3.48
 Release:	1
 License:	GPL
 Group:		X11/Applications
@@ -125,8 +125,7 @@ install http/alevtd $RPM_BUILD_ROOT/usr/bin
 
 gzip -9nf README Changes Programming-FAQ Trouble-Shooting \
 	Sound-FAQ README.lirc README.bttv UPDATE_TO_v3.0 tools/README \
-	xawtv-conf_example-* \
-	$RPM_BUILD_ROOT%{_libdir}/X11/fonts/misc/*
+	xawtv-conf_example-*
 
 %post
 cd %{_libdir}/X11/fonts/misc
