@@ -26,7 +26,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	Xaw3d-devel >= 1.5
 BuildRequires:	XFree86-devel
 BuildRequires:	aalib-devel
-%{?_with_lirc:BuildRequires: lirc-devel}
+%{!?_without_lirc:BuildRequires: lirc-devel}
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
