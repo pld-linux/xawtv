@@ -8,8 +8,8 @@ Summary(pt_BR):	Visualizador de fluxos de imagens obtidas através do Video4Linux
 Summary(ru):	ðÒÏÓÍÏÔÒ É ÚÁÐÉÓØ ×ÉÄÅÏÐÏÔÏËÏ×
 Summary(uk):	ðÅÒÅÇÌÑÄ ÔÁ ÚÁÐÉÓ ×¦ÄÅÏÐÏÔÏË¦×
 Name:		xawtv
-Version:	3.74
-Release:	2
+Version:	3.79
+Release:	0.5
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
@@ -17,6 +17,7 @@ Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
 Source4:	%{name}-conf_example-PTK
+Source5:	http://bytesex.org/xawtv/tv-fonts-1.0.tar.bz2
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-newkeys-radio.patch
 Patch2:		%{name}-channels_list-cable_poland_PTK.patch
@@ -33,6 +34,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define         _prefix         /usr/X11R6
 %define		_libdir		%{_prefix}/lib
 %define         _mandir         %{_prefix}/man
+%define 	font_dir 	tv-fonts-1.0
 
 %description
 A collection tools for video4linux:
@@ -151,10 +153,10 @@ Program do obs³ugi tunera TV wy¶wietlaj±cy obraz przy u¿yciu znaków
 ASCII.
 
 %prep
-%setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%setup -q -a 5
+#%patch0 -p1
+#%patch1 -p1
+#%patch2 -p1
 
 %build
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
@@ -163,10 +165,11 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 %{?_without_lirc:	--disable-lirc} \
 	--disable-quicktime \
 	--enable-xfree-ext \
-	--enable-xvideo \
-	--disable-alsa
+	--enable-xvideo 
 
 %{__make}
+
+%{__make} -C %{font_dir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -174,7 +177,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{_bindir} \
 	$RPM_BUILD_ROOT%{_libdir}/X11{,/pl}/app-defaults \
 	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
-	$RPM_BUILD_ROOT/usr/bin
+	$RPM_BUILD_ROOT/usr/bin \
+	$RPM_BUILD_ROOT%{_fontsdir}/misc
 
 %{__make} install \
 	DESTDIR="$RPM_BUILD_ROOT" \
@@ -185,16 +189,16 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE4} .
 
+cp %{font_dir}/*.gz $RPM_BUILD_ROOT%{_fontsdir}/misc/
+
 mv $RPM_BUILD_ROOT{%{_bindir},/usr/bin}/alevtd
 
-gzip -9nf Changes README* xawtv-conf_example-*
-
 %post
-cd %{_libdir}/X11/fonts/misc
+cd %{_fontsdir}
 /usr/X11R6/bin/mkfontdir
 
 %postun
-cd %{_libdir}/X11/fonts/misc
+cd %{_fontsdir}
 /usr/X11R6/bin/mkfontdir
 
 %clean
@@ -202,7 +206,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz
+%doc Changes README* xawtv-conf_example-*
 %attr(4755,root,root) %{_bindir}/v4l-conf
 %attr(755,root,root) %{_bindir}/fbtv
 %attr(755,root,root) %{_bindir}/streamer
@@ -212,28 +216,42 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/rootv
 %attr(755,root,root) %{_bindir}/webcam
 %attr(755,root,root) %{_bindir}/scantv
+%attr(755,root,root) %{_bindir}/showqt
+%attr(755,root,root) %{_bindir}/pia
+%attr(755,root,root) %{_bindir}/v4l-info
 %{_libdir}/%{name}
 
 %{_libdir}/X11/app-defaults/Xawtv
 %lang(pl) %{_libdir}/X11/pl/app-defaults/Xawtv
 %{_applnkdir}/Multimedia/*
 
-%{_libdir}/X11/fonts/misc/*
+%{_datadir}/%{name}
+%{_fontsdir}/misc/*
 
 %{_mandir}/man1/fbtv.1*
-%lang(es) %{_mandir}/es/man1/fbtv.1*
 %{_mandir}/man1/v4lctl.1*
 %{_mandir}/man1/xawtv-remote.1*
 %{_mandir}/man1/xawtv.1*
-%lang(es) %{_mandir}/es/man1/xawtv.1*
 %{_mandir}/man1/webcam.1*
 %{_mandir}/man1/rootv.1*
 %{_mandir}/man1/scantv.1*
-%lang(es) %{_mandir}/es/man1/scantv.1*
 %{_mandir}/man1/streamer.1*
+%{_mandir}/man1/pia.1*
+%{_mandir}/man1/mtt.1*
+%{_mandir}/man1/motv.1*
 %{_mandir}/man5/xawtvrc.5*
-%lang(es) %{_mandir}/es/man5/xawtvrc.5*
 %{_mandir}/man8/v4l-conf.8*
+%lang(es) %{_mandir}/es/man1/fbtv.1*
+%lang(es) %{_mandir}/es/man1/rootv.1*
+%lang(es) %{_mandir}/es/man1/scantv.1*
+%lang(es) %{_mandir}/es/man1/streamer.1*
+%lang(es) %{_mandir}/es/man1/ttv.1*
+%lang(es) %{_mandir}/es/man1/v4lctl.1*
+%lang(es) %{_mandir}/es/man1/xawtv-remote.1*
+%lang(es) %{_mandir}/es/man1/xawtv.1*
+%lang(es) %{_mandir}/es/man5/xawtvrc.5*
+%lang(es) %{_mandir}/es/man8/v4l-conf.8*
+%lang(fr) %{_mandir}/fr/man1/xawtv.1*
 
 %files radio
 %defattr(644,root,root,755)
@@ -254,6 +272,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/ntsc-cc.1*
 %{_mandir}/man1/record.1*
 %{_mandir}/man1/subtitles.1*
+%lang(es) %{_mandir}/es/man1/subtitles.1*
 
 %files alevtd
 %defattr(644,root,root,755)
