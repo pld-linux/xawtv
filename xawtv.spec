@@ -2,7 +2,7 @@ Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.12
-Release:	2
+Release:	3
 License:	GNU 
 Group:		X11/Applications
 Group(pl):	X11/Aplikacje
@@ -111,7 +111,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc {README,Changes,COPYING,Programming-FAQ,Trouble-Shooting,Sound-FAQ}.gz
 %doc {README.lirc,README.bttv,UPDATE_TO_v3.0}.gz
 
-%attr(755,root,root) %{_bindir}/v4l-conf
+%attr(4755,root,root) %{_bindir}/v4l-conf
 %attr(755,root,root) %{_bindir}/fbtv
 %attr(755,root,root) %{_bindir}/streamer
 %attr(755,root,root) %{_bindir}/xawtv-remote
