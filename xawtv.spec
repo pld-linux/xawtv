@@ -1,29 +1,16 @@
-Summary: Video4Linux Stream Capture Viewer
-Summary(pl): Aplikacje video dla Linuxa
-Name: xawtv
-Version: 3.01
-Release: 1
-Source: xawtv-%{version}.tar.gz
-Group: X11/Applications
-Group(pl): X11/Aplikacje
-Copyright: GNU 
-URL: http://www.in-berlin.de/User/kraxel/v4l/xawtv-%{version}.tar.gz
-BuildRoot:      /tmp/%{name}-%{version}-root
+Summary:	Video4Linux Stream Capture Viewer
+Summary(pl):	Aplikacje video dla Linuxa
+Name:		xawtv
+Version:	3.01
+Release:	1
+Source:		http://www.in-berlin.de/User/kraxel/v4l/%{name}-%{version}.tar.gz
+Group:		X11/Applications
+Group(pl):	X11/Aplikacje
+Copyright:	GNU 
+BuildRoot:	/tmp/%{name}-%{version}-root
 
 %define         _prefix         /usr/X11R6
-%define         _mandir         /usr/X11R6/man
-
-
-%package radio
-Summary: radio
-Summary(pl): radio
-Group: Applications/Sound
-Group(pl): Aplikacje/D¼wiêk
-      
-%package misc
-Summary: ró¿ne
-Group: X11/Applications
-Group(pl): X11/Aplikacje
+%define         _mandir         %{_prefix}/man
 
 %description
 A collection tools for video4linux:
@@ -40,11 +27,24 @@ Kolekcja narzêdzi video dla Linuxa
  * v4lctl   - narzêdzie do kontroli urz±dzeñ v4l
 
 
+%package radio
+Summary:	radio
+Summary(pl):	radio
+Group:		Applications/Sound
+Group(pl):	Aplikacje/D¼wiêk
+      
+
 %description radio
 This is a ncurses-based radio application
 
 %description -l pl radio
 Aplikacje radiowe bazuj±ce na ncurses
+
+%package misc
+Summary:	Misc utils related (or not) to xawtv
+Summary:	Ró¿ne narzêdzia pomocnicze do xawtv
+Group:		X11/Applications
+Group(pl):	X11/Aplikacje
 
 %description misc
 This package has a few tools you might find useful.  They
@@ -68,11 +68,12 @@ xawtv. Zosta³y napisane w celu debagowania xawtv.
  * showriff    - Wy¶wietla strukturê plików RIFF (avi, wav).
 
 %prep
-%setup -q -n xawtv-%{version}
+%setup -q
 
 
 %build
-./configure --prefix=%{_prefix}
+CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
+%configure
 make
 
 %install
@@ -83,19 +84,19 @@ make ROOT="$RPM_BUILD_ROOT" SUID_ROOT="" install
 
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man1/* \
-{README,Changes,COPYING,Programming-FAQ,Trouble-Shooting,Sound-FAQ,README.lirc,README.bttv,UPDATE_TO_v3.0,tools/README}
+	README Changes COPYING Programming-FAQ Trouble-Shooting \
+	Sound-FAQ README.lirc README.bttv UPDATE_TO_v3.0 tools/README
+%post
+cd %{_prefix}/lib/X11/fonts/misc
+mkfontdir
 
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %files
-
-%{_mandir}/man1/fbtv.1.gz
-%{_mandir}/man1/v4l-conf.1.gz
-%{_mandir}/man1/v4lctl.1.gz
-%{_mandir}/man1/xawtv-remote.1.gz
-%{_mandir}/man1/xawtv.1.gz
-
-%defattr(644,root,root,755) 
-%doc {README,Changes,COPYING,Programming-FAQ,Trouble-Shooting,Sound-FAQ,README.lirc,README.bttv,UPDATE_TO_v3.0}.gz
+%defattr(644,root,root,755)
+%doc {README,Changes,COPYING,Programming-FAQ,Trouble-Shooting,Sound-FAQ}.gz
+%doc {README.lirc,README.bttv,UPDATE_TO_v3.0}.gz
 
 %attr(755,root,root) %{_prefix}/bin/v4l-conf
 %attr(755,root,root) %{_prefix}/bin/fbtv
@@ -103,24 +104,25 @@ gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man1/* \
 %attr(755,root,root) %{_prefix}/bin/xawtv-remote
 %attr(755,root,root) %{_prefix}/bin/xawtv
 %attr(755,root,root) %{_prefix}/bin/v4lctl
-%defattr(-,root,root)
+
 %{_prefix}/lib
 
+%{_mandir}/man1/fbtv.1*
+%{_mandir}/man1/v4l-conf.1*
+%{_mandir}/man1/v4lctl.1*
+%{_mandir}/man1/xawtv-remote.1*
+%{_mandir}/man1/xawtv.1*
+
 %files radio
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_prefix}/bin/radio
-%{_mandir}/man1/radio.1.gz
+%{_mandir}/man1/radio.1*
 
 %files misc
+%defattr(644,root,root,755)
+%doc tools/README.gz
 %attr(755,root,root) %{_prefix}/bin/dump-mixers
 %attr(755,root,root) %{_prefix}/bin/propwatch
 %attr(755,root,root) %{_prefix}/bin/record
 %attr(755,root,root) %{_prefix}/bin/showriff
-%{_mandir}/man1/propwatch.1.gz
-%doc tools/README.gz
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%post
-cd %{_prefix}/lib/X11/fonts/misc
-mkfontdir
+%{_mandir}/man1/propwatch.1*
