@@ -6,7 +6,7 @@ Summary(es):	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Summary(pt_BR):	Visualizador de fluxos de imagens obtidas através do Video4Linux
 Name:		xawtv
-Version:	3.68
+Version:	3.74
 Release:	1
 License:	GPL
 Group:		X11/Applications
@@ -135,15 +135,14 @@ ASCII.
 %patch2 -p1
 
 %build
-CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
-%configure2_13 \
+CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
+%configure \
 %{!?_without_lirc:	--enable-lirc} \
 %{?_without_lirc:	--disable-lirc} \
 	--disable-quicktime \
 	--enable-xfree-ext \
 	--enable-xvideo
 
-%{__make} -C src Xawtv.h
 %{__make}
 
 %install
@@ -163,10 +162,9 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Multimedia/
 install %{SOURCE4} .
 
-install http/alevtd $RPM_BUILD_ROOT/usr/bin
+mv $RPM_BUILD_ROOT{%{_bindir},/usr/bin}/alevtd 
 
-gzip -9nf Changes Programming-FAQ README* UPDATE_TO_v3.0 tools/README \
-	xawtv-conf_example-*
+gzip -9nf Changes README* xawtv-conf_example-*
 
 %post
 cd %{_libdir}/X11/fonts/misc
@@ -200,14 +198,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/fonts/misc/*
 
 %{_mandir}/man1/fbtv.1*
+%lang(es) %{_mandir}/es/man1/fbtv.1*
 %{_mandir}/man1/v4lctl.1*
 %{_mandir}/man1/xawtv-remote.1*
 %{_mandir}/man1/xawtv.1*
+%lang(es) %{_mandir}/es/man1/xawtv.1*
 %{_mandir}/man1/webcam.1*
 %{_mandir}/man1/rootv.1*
 %{_mandir}/man1/scantv.1*
+%lang(es) %{_mandir}/es/man1/scantv.1*
 %{_mandir}/man1/streamer.1*
 %{_mandir}/man5/xawtvrc.5*
+%lang(es) %{_mandir}/es/man5/xawtvrc.5*
 %{_mandir}/man8/v4l-conf.8*
 
 %files radio
@@ -217,7 +219,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files misc
 %defattr(644,root,root,755)
-%doc tools/README.gz
 %attr(755,root,root) %{_bindir}/dump-mixers
 %attr(755,root,root) %{_bindir}/propwatch
 %attr(755,root,root) %{_bindir}/record
