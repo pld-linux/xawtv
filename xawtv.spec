@@ -3,10 +3,15 @@ Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.01
 Release:	1
-Source:		http://www.in-berlin.de/User/kraxel/v4l/%{name}-%{version}.tar.gz
+License:	GNU 
 Group:		X11/Applications
 Group(pl):	X11/Aplikacje
-Copyright:	GNU 
+Source0:	http://www.in-berlin.de/User/kraxel/v4l/%{name}-%{version}.tar.gz
+Source1:	Xawtv.ad-pl
+BuildRequires:	ncurses-devel >= 5.0
+BuildRequires:	libjpeg-devel
+BuildRequires:	Xaw3d-devel
+BuildRequires:	XFree86-devel
 BuildRoot:	/tmp/%{name}-%{version}-root
 
 %define         _prefix         /usr/X11R6
@@ -26,19 +31,17 @@ Kolekcja narzêdzi video dla Linuxa
  * streamer - narzêdzie do przechwytywanie obrazu (zdjêcia / filmy)
  * v4lctl   - narzêdzie do kontroli urz±dzeñ v4l
 
-
 %package radio
 Summary:	radio
 Summary(pl):	radio
 Group:		Applications/Sound
 Group(pl):	Aplikacje/D¼wiêk
       
-
 %description radio
-This is a ncurses-based radio application
+This is a ncurses-based radio application.
 
 %description -l pl radio
-Aplikacje radiowe bazuj±ce na ncurses
+Aplikacje radiowe bazuj±ce na ncurses.
 
 %package misc
 Summary:	Misc utils related (or not) to xawtv
@@ -70,7 +73,6 @@ xawtv. Zosta³y napisane w celu debagowania xawtv.
 %prep
 %setup -q
 
-
 %build
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 %configure
@@ -79,16 +81,25 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/{%{_prefix}/bin,%{_mandir}/man1}
+install -d $RPM_BUILD_ROOT/{%{_prefix}/bin,%{_mandir}/man1} \
+	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults
+
 make ROOT="$RPM_BUILD_ROOT" SUID_ROOT="" install
 
+install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man1/* \
 	README Changes COPYING Programming-FAQ Trouble-Shooting \
-	Sound-FAQ README.lirc README.bttv UPDATE_TO_v3.0 tools/README
+	Sound-FAQ README.lirc README.bttv UPDATE_TO_v3.0 tools/README \
+	$RPM_BUILD_ROOT%{_libdir}/X11/fonts/misc/*
+
 %post
-cd %{_prefix}/lib/X11/fonts/misc
-mkfontdir
+cd %{_libdir}/X11/fonts/misc
+/usr/X11R6/bin/mkfontdir
+
+%postun
+cd %{_libdir}/X11/fonts/misc
+/usr/X11R6/bin/mkfontdir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -98,14 +109,17 @@ rm -rf $RPM_BUILD_ROOT
 %doc {README,Changes,COPYING,Programming-FAQ,Trouble-Shooting,Sound-FAQ}.gz
 %doc {README.lirc,README.bttv,UPDATE_TO_v3.0}.gz
 
-%attr(755,root,root) %{_prefix}/bin/v4l-conf
-%attr(755,root,root) %{_prefix}/bin/fbtv
-%attr(755,root,root) %{_prefix}/bin/streamer
-%attr(755,root,root) %{_prefix}/bin/xawtv-remote
-%attr(755,root,root) %{_prefix}/bin/xawtv
-%attr(755,root,root) %{_prefix}/bin/v4lctl
+%attr(755,root,root) %{_bindir}/v4l-conf
+%attr(755,root,root) %{_bindir}/fbtv
+%attr(755,root,root) %{_bindir}/streamer
+%attr(755,root,root) %{_bindir}/xawtv-remote
+%attr(755,root,root) %{_bindir}/xawtv
+%attr(755,root,root) %{_bindir}/v4lctl
 
-%{_prefix}/lib
+%{_libdir}/X11/app-defaults/Xawtv
+%lang(pl) %{_libdir}/X11/pl/app-defaults/Xawtv
+
+%{_libdir}/X11/fonts/misc/*
 
 %{_mandir}/man1/fbtv.1*
 %{_mandir}/man1/v4l-conf.1*
@@ -115,14 +129,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files radio
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_prefix}/bin/radio
+%attr(755,root,root) %{_bindir}/radio
 %{_mandir}/man1/radio.1*
 
 %files misc
 %defattr(644,root,root,755)
 %doc tools/README.gz
-%attr(755,root,root) %{_prefix}/bin/dump-mixers
-%attr(755,root,root) %{_prefix}/bin/propwatch
-%attr(755,root,root) %{_prefix}/bin/record
-%attr(755,root,root) %{_prefix}/bin/showriff
+%attr(755,root,root) %{_bindir}/dump-mixers
+%attr(755,root,root) %{_bindir}/propwatch
+%attr(755,root,root) %{_bindir}/record
+%attr(755,root,root) %{_bindir}/showriff
 %{_mandir}/man1/propwatch.1*
