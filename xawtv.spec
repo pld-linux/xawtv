@@ -2,7 +2,7 @@ Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.52
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
@@ -18,6 +18,7 @@ BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	libjpeg-devel
 BuildRequires:	Xaw3d-devel >= 1.5
 BuildRequires:	XFree86-devel
+BuildRequires:	aalib-devel
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -90,6 +91,19 @@ HTTP daemon for alevt teletext decoder
 %description -l pl alevtd
 Daemon HTTP dla dekodera teletekstu alevt
 
+%package ttv
+Summary:	ASCII Art TV viewer
+Summary(pl):	Tekstowy program do ogl±dania TV
+Group:		X11/Applications
+Group(de):	X11/Applikationen
+Group(pl):	X11/Aplikacje
+
+%description ttv
+TV tuner program using ASCII characters to display picture.
+
+%description -l pl ttv
+Tuner TV korzystaj±cy wy¶wietlaj±cy obraz przy u¿yciu znaków ASCII
+
 %prep
 %setup -q
 %patch0 -p1
@@ -123,8 +137,7 @@ install %{SOURCE3} .
 
 install http/alevtd $RPM_BUILD_ROOT/usr/bin
 
-gzip -9nf README Changes Programming-FAQ Trouble-Shooting \
-	Sound-FAQ README.lirc README.bttv UPDATE_TO_v3.0 tools/README \
+gzip -9nf Changes Programming-FAQ README* UPDATE_TO_v3.0 tools/README \
 	xawtv-conf_example-*
 
 %post
@@ -164,6 +177,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xawtv.1*
 %{_mandir}/man1/webcam.1*
 %{_mandir}/man1/rootv.1*
+%{_mandir}/man1/scantv.1*
+%{_mandir}/man1/streamer.1*
 
 %files radio
 %defattr(644,root,root,755)
@@ -177,9 +192,21 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/propwatch
 %attr(755,root,root) %{_bindir}/record
 %attr(755,root,root) %{_bindir}/showriff
+%attr(755,root,root) %{_bindir}/ntsc-cc
+%attr(755,root,root) %{_bindir}/subtitles
 %{_mandir}/man1/propwatch.1*
 %{_mandir}/man1/showriff.1*
+%{_mandir}/man1/dump-mixers.1*
+%{_mandir}/man1/ntsc-cc.1*
+%{_mandir}/man1/record.1*
+%{_mandir}/man1/subtitles.1*
 
 %files alevtd
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/bin/alevtd
+%{_mandir}/man1/alevtd.1*
+
+%files ttv
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/ttv
+%{_mandir}/man1/ttv.1*
