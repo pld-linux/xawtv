@@ -1,7 +1,6 @@
-diff -ruN xawtv-3.82.orig/x11/wmhooks.c xawtv-3.82/x11/wmhooks.c
---- xawtv-3.82.orig/x11/wmhooks.c	Fri Dec 20 17:59:56 2002
-+++ xawtv-3.82/x11/wmhooks.c	Thu Jan  2 11:52:31 2003
-@@ -130,30 +130,30 @@
+--- xawtv-3.85/x11/wmhooks.c.orig	Sun Mar  2 22:27:12 2003
++++ xawtv-3.85/x11/wmhooks.c	Sun Mar  2 22:34:54 2003
+@@ -131,13 +131,14 @@
      Window root = DefaultRootWindow(dpy);
  
      /* netwm checks */
@@ -9,71 +8,33 @@ diff -ruN xawtv-3.82.orig/x11/wmhooks.c xawtv-3.82/x11/wmhooks.c
 +    if (NULL == wm_fullscreen &&
  	0 == wm_check_capability(dpy,root,_NET_SUPPORTED,
 -				 _NET_WM_STATE_ABOVE)) {
-+				 _NET_WM_STATE_FULLSCREEN)) {
++					_NET_WM_STATE_FULLSCREEN)) {
  	if (debug)
 -	    fprintf(stderr,"wmhooks: netwm state above\n");
 -	wm_stay_on_top = netwm_stay_on_top;
--        return 0;
 -    } 
-+	    fprintf(stderr,"wmhooks: netwm state fullscreen\n");
-+	wm_fullscreen = netwm_fullscreen;
-+	return 0;
++           fprintf(stderr,"wmhooks: netwm state fullscreen\n");
++       wm_fullscreen = netwm_fullscreen;
++       return 0;
 +    }
      if (NULL == wm_stay_on_top &&
  	0 == wm_check_capability(dpy,root,_NET_SUPPORTED,
  				 _NET_WM_STATE_STAYS_ON_TOP)) {
- 	if (debug)
+@@ -145,12 +146,13 @@
  	    fprintf(stderr,"wmhooks: netwm state stays_on_top\n");
  	wm_stay_on_top = netwm_old_stay_on_top;
--        return 0;
-+	return 0;
      }
 -    if (NULL == wm_fullscreen &&
 +    if (NULL == wm_stay_on_top &&
  	0 == wm_check_capability(dpy,root,_NET_SUPPORTED,
 -				 _NET_WM_STATE_FULLSCREEN)) {
-+				 _NET_WM_STATE_ABOVE)) {
++					_NET_WM_STATE_ABOVE)) {
  	if (debug)
 -	    fprintf(stderr,"wmhooks: netwm state fullscreen\n");
 -	wm_fullscreen = netwm_fullscreen;
--        return 0;
--    }
-+	    fprintf(stderr,"wmhooks: netwm state above\n");
-+	wm_stay_on_top = netwm_stay_on_top;
-+	return 0;
-+    } 
++           fprintf(stderr,"wmhooks: netwm state above\n");
++       wm_stay_on_top = netwm_stay_on_top;
++       return 0;
+     }
  
      /* gnome checks */
-     if (NULL == wm_stay_on_top &&
-@@ -163,7 +163,6 @@
- 	wm_stay_on_top = gnome_stay_on_top;
- 	return 0;
-     }
--
--    /* nothing found... */
-+    
-     return -1;
- }
-diff -ruN xawtv-3.82.orig/x11/xt.c xawtv-3.82/x11/xt.c
---- xawtv-3.82.orig/x11/xt.c	Fri Dec 20 19:57:04 2002
-+++ xawtv-3.82/x11/xt.c	Thu Jan  2 11:50:58 2003
-@@ -830,13 +830,14 @@
-     Window root,child;
-     int    wpx,wpy,mask;
- 
--    if (wm_fullscreen) {
--	/* full service for us :-) */
--	fs = !fs;
-+    if (wm_fullscreen) 
-+    {
-+	int op = 1;
- 	if (debug)
- 	    fprintf(stderr,"fullscreen %s via netwm\n", fs ? "on" : "off");
--	wm_fullscreen(dpy,XtWindow(app_shell),fs);
--	return;
-+	    
-+	if (fs == 1) op = 0;
-+	wm_fullscreen(dpy,XtWindow(app_shell),op);
-     }
- 
-     if (fs) {
