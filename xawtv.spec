@@ -1,7 +1,7 @@
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
-Version:	3.34
+Version:	3.35
 Release:	1
 License:	GPL
 Group:		X11/Applications
@@ -100,7 +100,8 @@ Daemon HTTP dla dekodera teletekstu alevt
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 %configure \
 	--enable-lirc \
-	--disable-quicktime
+	--disable-quicktime \
+	--enable-xfree-ext
 
 %{__make}
 
