@@ -1,8 +1,8 @@
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
-Version:	3.56
-Release:	2
+Version:	3.58
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
@@ -14,7 +14,6 @@ Source3:	%{name}-conf_example-PTK
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-newkeys-radio.patch
 Patch2:		%{name}-channels_list-cable_poland_PTK.patch
-Patch3:		%{name}-keypad_partial.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	libjpeg-devel
@@ -113,7 +112,6 @@ Program do obs³ugi tunera TV wy¶wietlaj±cy obraz przy u¿yciu znaków ASCII.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
@@ -134,7 +132,7 @@ install -d $RPM_BUILD_ROOT/%{_bindir} \
 	$RPM_BUILD_ROOT/usr/bin
 
 %{__make} install \
-	ROOT="$RPM_BUILD_ROOT" \
+	DESTDIR="$RPM_BUILD_ROOT" \
 	SUID_ROOT=""
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
