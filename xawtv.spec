@@ -84,7 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults
 
-make ROOT="$RPM_BUILD_ROOT" SUID_ROOT="" install
+%{__make} ROOT="$RPM_BUILD_ROOT" SUID_ROOT="" install
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/Xawtv
 
