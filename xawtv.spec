@@ -1,19 +1,20 @@
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
-Version:	3.52
-Release:	3
+Version:	3.56
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
 Group(pl):	X11/Aplikacje
-Source0:	http://www.strusel007.de/linux/xawtv/%{name}_%{version}.tar.gz
+Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-conf_example-PTK
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-newkeys-radio.patch
 Patch2:		%{name}-channels_list-cable_poland_PTK.patch
+URL:		http://bytesex.org/xawtv/
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	libjpeg-devel
 BuildRequires:	Xaw3d-devel >= 1.5
@@ -118,6 +119,7 @@ CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 	--disable-quicktime \
 	--enable-xfree-ext
 
+%{__make} -C src Xawtv.h
 %{__make}
 
 %install
@@ -172,7 +174,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/fonts/misc/*
 
 %{_mandir}/man1/fbtv.1*
-%{_mandir}/man1/v4l-conf.1*
 %{_mandir}/man1/v4lctl.1*
 %{_mandir}/man1/xawtv-remote.1*
 %{_mandir}/man1/xawtv.1*
@@ -180,6 +181,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rootv.1*
 %{_mandir}/man1/scantv.1*
 %{_mandir}/man1/streamer.1*
+%{_mandir}/man8/v4l-conf.8*
 
 %files radio
 %defattr(644,root,root,755)
