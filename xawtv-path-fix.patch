@@ -1,0 +1,14 @@
+diff -Nuard xawtv-3.90.orig/Makefile.in xawtv-3.90/Makefile.in
+--- xawtv-3.90.orig/Makefile.in	2003-04-16 17:58:05.000000000 +0200
++++ xawtv-3.90/Makefile.in	2003-11-11 18:38:11.000000000 +0100
+@@ -71,8 +71,8 @@
+ CFLAGS   += $(X11_FLAGS)
+ CFLAGS   += $(LIB_FLAGS)
+ CFLAGS   += -DCONFIGFILE='"$(config)"'
+-CFLAGS   += -DLIBDIR='"$(libdir)"'
+-CFLAGS   += -DDATADIR='"$(datadir)"'
++CFLAGS   += -DLIBDIR='"@libdir@/xawtv"'
++CFLAGS   += -DDATADIR='"@datadir@/xawtv"'
+ CFLAGS   += -DVERSION='"$(VERSION)"'
+ CXXFLAGS := $(CFLAGS)
+ 
