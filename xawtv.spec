@@ -2,7 +2,7 @@ Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.56
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
@@ -14,6 +14,7 @@ Source3:	%{name}-conf_example-PTK
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-newkeys-radio.patch
 Patch2:		%{name}-channels_list-cable_poland_PTK.patch
+Patch3:		%{name}-keypad_partial.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	libjpeg-devel
@@ -25,6 +26,7 @@ Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _prefix         /usr/X11R6
+%define		_libdir		%{_prefix}/lib
 %define         _mandir         %{_prefix}/man
 
 %description
@@ -104,17 +106,18 @@ Group(pl):	X11/Aplikacje
 TV tuner program using ASCII characters to display picture.
 
 %description -l pl ttv
-Tuner TV korzystaj±cy wy¶wietlaj±cy obraz przy u¿yciu znaków ASCII
+Program do obs³ugi tunera TV wy¶wietlaj±cy obraz przy u¿yciu znaków ASCII.
 
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
-%configure \
+%configure2_13 \
 	--enable-lirc \
 	--disable-quicktime \
 	--enable-xfree-ext
@@ -125,7 +128,7 @@ CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1} \
+install -d $RPM_BUILD_ROOT/%{_bindir} \
 	$RPM_BUILD_ROOT%{_libdir}/X11{,/pl}/app-defaults \
 	$RPM_BUILD_ROOT%{_applnkdir}/Multimedia \
 	$RPM_BUILD_ROOT/usr/bin
@@ -181,6 +184,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rootv.1*
 %{_mandir}/man1/scantv.1*
 %{_mandir}/man1/streamer.1*
+%{_mandir}/man5/xawtvrc.5*
 %{_mandir}/man8/v4l-conf.8*
 
 %files radio
