@@ -6,4 +6,5 @@ Exec=xawtv -noxv
 Icon=xawtv.png
 Terminal=0
 Type=Application
+Encoding=UTF-8
 # vi: encoding=utf-8:termencoding=iso-8859-2
