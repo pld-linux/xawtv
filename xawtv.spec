@@ -60,11 +60,11 @@ Summary(es):	xawtv: radio
 Summary(pl):	radio
 Summary(pt_BR):	Suporte a rádio no xawtv
 Group:		Applications/Sound
-      
+
 %description radio
 This is a ncurses-based radio application.
 
-%description -l pl radio
+%description radio -l pl
 Aplikacje radiowe bazuj±ce na ncurses.
 
 %package misc
@@ -84,7 +84,7 @@ do very much to do with xawtv. I've used/wrote them for debugging:
    which might be useful to trouble shoot sound problems.
  - showriff - display the structure of RIFF files (avi, wav).
 
-%description -l pl misc
+%description misc -l pl
 Ten pakiet zawiera sporo u¿ytecznych narzêdzi. Nie maj± wiele
 wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
  - propwatch - monitor ustawieñ
@@ -92,7 +92,7 @@ wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
  - record - Rejestrator d¼wiêku.
  - showriff - Wy¶wietla strukturê plików RIFF (avi, wav).
 
-%description -l pt_BR misc
+%description misc -l pt_BR
 Ferramentas adicionais para depuração dos componentes do pacote xawtv:
 
  - propwatch - monitora as propriedades de janelas X11. Se você quiser
@@ -113,7 +113,7 @@ Requires:	alevt
 %description alevtd
 HTTP daemon for alevt teletext decoder
 
-%description -l pl alevtd
+%description alevtd -l pl
 Daemon HTTP dla dekodera teletekstu alevt
 
 %package ttv
@@ -124,7 +124,7 @@ Group:		X11/Applications
 %description ttv
 TV tuner program using ASCII characters to display picture.
 
-%description -l pl ttv
+%description ttv -l pl
 Program do obs³ugi tunera TV wy¶wietlaj±cy obraz przy u¿yciu znaków
 ASCII.
 
