@@ -15,11 +15,13 @@ Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
+# Source0-md5:	9f43ae410965101f77c7c5d847c6842c
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
 Source4:	%{name}-conf_example-PTK
 Source5:	http://bytesex.org/xawtv/tv-fonts-1.0.tar.bz2
+# Source5-md5:	46c68df4976306e25a1526a762371770
 Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-channels_list-cable_poland_PTK.patch
 Patch2:		%{name}-fullscreen.patch
