@@ -12,7 +12,7 @@ BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	libjpeg-devel
 BuildRequires:	Xaw3d-devel
 BuildRequires:	XFree86-devel
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _prefix         /usr/X11R6
 %define         _mandir         %{_prefix}/man
