@@ -9,7 +9,7 @@ Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
 Version:	3.81
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
@@ -18,9 +18,9 @@ Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
 Source4:	%{name}-conf_example-PTK
 Source5:	http://bytesex.org/xawtv/tv-fonts-1.0.tar.bz2
-Patch0:		%{name}-config_dir.patch
+Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-channels_list-cable_poland_PTK.patch
-#Patch0:		%{name}-home_etc.patch
+Patch2:		%{name}-fullscreen.patch
 #Patch1:		%{name}-newkeys-radio.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	ncurses-devel >= 5.1
@@ -159,7 +159,7 @@ ASCII.
 %setup -q -a 5
 %patch0 -p1
 %patch1 -p1
-#%patch2 -p1
+%patch2 -p1
 
 %build
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
