@@ -8,8 +8,8 @@ Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
 Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
-Version:	3.79
-Release:	0.5
+Version:	3.81
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://bytesex.org/xawtv/%{name}_%{version}.tar.gz
@@ -18,15 +18,17 @@ Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
 Source4:	%{name}-conf_example-PTK
 Source5:	http://bytesex.org/xawtv/tv-fonts-1.0.tar.bz2
-Patch0:		%{name}-home_etc.patch
-Patch1:		%{name}-newkeys-radio.patch
-Patch2:		%{name}-channels_list-cable_poland_PTK.patch
+Patch0:		%{name}-config_dir.patch
+Patch1:		%{name}-channels_list-cable_poland_PTK.patch
+#Patch0:		%{name}-home_etc.patch
+#Patch1:		%{name}-newkeys-radio.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	libjpeg-devel
 BuildRequires:	Xaw3d-devel >= 1.5
 BuildRequires:	XFree86-devel
 BuildRequires:	aalib-devel
+BuildRequires:  zvbi-devel
 %{!?_without_lirc:BuildRequires: lirc-devel}
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -154,8 +156,8 @@ ASCII.
 
 %prep
 %setup -q -a 5
-#%patch0 -p1
-#%patch1 -p1
+%patch0 -p1
+%patch1 -p1
 #%patch2 -p1
 
 %build
