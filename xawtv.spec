@@ -2,17 +2,18 @@ Summary:	Video4Linux Stream Capture Viewer
 Summary(pl):	Aplikacje video dla Linuxa
 Name:		xawtv
 Version:	3.21
-Release:	1
+Release:	2
 License:	GNU 
 Group:		X11/Applications
+Group(de):	X11/Applikationen
 Group(pl):	X11/Aplikacje
 Source0:	http://www.strusel007.de/linux/xawtv/%{name}_%{version}.tar.gz
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Patch0:		%{name}-home_etc.patch
-BuildRequires:	ncurses-devel >= 5.0
+BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	libjpeg-devel
-BuildRequires:	Xaw3d-devel
+BuildRequires:	Xaw3d-devel >= 1.5
 BuildRequires:	XFree86-devel
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -38,6 +39,7 @@ Kolekcja narzêdzi video dla Linuxa
 Summary:	radio
 Summary(pl):	radio
 Group:		Applications/Sound
+Group(de):	Applikationen/Laut
 Group(pl):	Aplikacje/D¼wiêk
       
 %description radio
@@ -50,6 +52,7 @@ Aplikacje radiowe bazuj±ce na ncurses.
 Summary:	Misc utils related (or not) to xawtv
 Summary:	Ró¿ne narzêdzia pomocnicze do xawtv
 Group:		X11/Applications
+Group(de):	X11/Applikationen
 Group(pl):	X11/Aplikacje
 
 %description misc
@@ -74,6 +77,7 @@ wspólnego z xawtv. Zosta³y napisane w celu debagowania xawtv.
 Summary:	HTTP daemon for alevt teletext decoder
 Summary(pl):	Daemon HTTP dla dekodera teletekstu alevt
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
 Requires:	alevt
 
