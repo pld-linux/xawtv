@@ -10,7 +10,7 @@ Summary(ru):	Просмотр и запись видеопотоков
 Summary(uk):	Перегляд та запис в╕деопоток╕в
 Name:		xawtv
 Version:	3.94
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
@@ -27,6 +27,7 @@ Patch2:		%{name}-fullscreen.patch
 Patch3:		%{name}-libng_fix.patch
 Patch4:		%{name}-appdefsdir.patch
 Patch5:		%{name}-path-fix.patch
+Patch6:		%{name}-gcc4.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
@@ -169,6 +170,7 @@ ASCII.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
