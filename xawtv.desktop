@@ -6,5 +6,5 @@ Exec=xawtv
 Terminal=false
 Type=Application
 Encoding=UTF-8
-Categories=Video;TV;
+Categories=AudioVideo;TV;
 # vi: encoding=utf-8
