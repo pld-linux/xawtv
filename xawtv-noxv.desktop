@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=XawTV (XVideo disabled)
+Name=XawTV - XVideo disabled
 Comment=TV Tuner Program (with XVideo disabled --- allows capture).
 Comment[pl]=Program obsługujący tuner TV (z wyłączonym XVideo --- umożliwia to przechwytywanie obrazu).
 Exec=xawtv -noxv
