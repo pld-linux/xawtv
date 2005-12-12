@@ -173,7 +173,7 @@ ASCII.
 %patch6 -p1
 
 %build
-CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
+CFLAGS="%{rpmcflags} -I%{_includedir}/ncurses"; export CFLAGS
 # MMX support in linear-blend plugin is chosen at compile time - athlon/p3/p4 only
 %configure \
 	%{!?with_aalib:--disable-aalib} \
@@ -297,7 +297,7 @@ fontpostinst misc
 
 %files alevtd
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/bin/alevtd
+%attr(755,root,root) %{_bindir}/alevtd
 %{_mandir}/man1/alevtd.1*
 
 %if %{with aalib}
