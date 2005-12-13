@@ -30,8 +30,8 @@ Patch5:		%{name}-path-fix.patch
 Patch6:		%{name}-gcc4.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
-BuildRequires:	XFree86-devel
 BuildRequires:	XFree86
+BuildRequires:	XFree86-devel
 BuildRequires:	Xaw3d-devel >= 1.5
 %{?with_aalib:BuildRequires:	aalib-devel}
 BuildRequires:	alsa-lib-devel
@@ -173,7 +173,7 @@ ASCII.
 %patch6 -p1
 
 %build
-CFLAGS="%{rpmcflags} -I%{_includedir}/ncurses"; export CFLAGS
+CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
 # MMX support in linear-blend plugin is chosen at compile time - athlon/p3/p4 only
 %configure \
 	%{!?with_aalib:--disable-aalib} \
