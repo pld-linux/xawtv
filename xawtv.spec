@@ -4,10 +4,10 @@
 %bcond_without	lirc	# compile without lirc remote control support
 #
 Summary:	Video4Linux Stream Capture Viewer
-Summary(pl.UTF-8):   Aplikacje video dla Linuksa
-Summary(pt_BR.UTF-8):   Visualizador de fluxos de imagens obtidas através do Video4Linux
-Summary(ru.UTF-8):   Просмотр и запись видеопотоков
-Summary(uk.UTF-8):   Перегляд та запис відеопотоків
+Summary(pl.UTF-8):	Aplikacje video dla Linuksa
+Summary(pt_BR.UTF-8):	Visualizador de fluxos de imagens obtidas através do Video4Linux
+Summary(ru.UTF-8):	Просмотр и запись видеопотоков
+Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
 Version:	3.94
 Release:	3
@@ -91,9 +91,9 @@ video4linux:
 
 %package radio
 Summary:	radio
-Summary(es.UTF-8):   xawtv: radio
-Summary(pl.UTF-8):   radio
-Summary(pt_BR.UTF-8):   Suporte a rádio no xawtv
+Summary(es.UTF-8):	xawtv: radio
+Summary(pl.UTF-8):	radio
+Summary(pt_BR.UTF-8):	Suporte a rádio no xawtv
 Group:		Applications/Sound
 
 %description radio
@@ -104,9 +104,9 @@ Aplikacje radiowe bazujące na ncurses.
 
 %package misc
 Summary:	Misc utils related (or not) to xawtv
-Summary(es.UTF-8):   xawtv: misc
-Summary(pl.UTF-8):   Różne narzędzia pomocnicze do xawtv
-Summary(pt_BR.UTF-8):   Ferramentas adicionais do xawtv
+Summary(es.UTF-8):	xawtv: misc
+Summary(pl.UTF-8):	Różne narzędzia pomocnicze do xawtv
+Summary(pt_BR.UTF-8):	Ferramentas adicionais do xawtv
 Group:		X11/Applications
 
 %description misc
@@ -140,7 +140,7 @@ Ferramentas adicionais para depuração dos componentes do pacote xawtv:
 
 %package alevtd
 Summary:	HTTP daemon for alevt teletext decoder
-Summary(pl.UTF-8):   Daemon HTTP dla dekodera teletekstu alevt
+Summary(pl.UTF-8):	Daemon HTTP dla dekodera teletekstu alevt
 Group:		Daemons
 Requires:	alevt
 
@@ -152,7 +152,7 @@ Daemon HTTP dla dekodera teletekstu alevt
 
 %package ttv
 Summary:	ASCII Art TV viewer
-Summary(pl.UTF-8):   Tekstowy program do oglądania TV
+Summary(pl.UTF-8):	Tekstowy program do oglądania TV
 Group:		X11/Applications
 
 %description ttv
