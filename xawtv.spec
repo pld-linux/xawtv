@@ -4,10 +4,10 @@
 %bcond_without	lirc	# compile without lirc remote control support
 #
 Summary:	Video4Linux Stream Capture Viewer
-Summary(pl):	Aplikacje video dla Linuksa
-Summary(pt_BR):	Visualizador de fluxos de imagens obtidas atravИs do Video4Linux
-Summary(ru):	Просмотр и запись видеопотоков
-Summary(uk):	Перегляд та запис в╕деопоток╕в
+Summary(pl.UTF-8):   Aplikacje video dla Linuksa
+Summary(pt_BR.UTF-8):   Visualizador de fluxos de imagens obtidas atravц╘s do Video4Linux
+Summary(ru.UTF-8):   п÷я─п╬я│п╪п╬я┌я─ п╦ п╥п╟п©п╦я│я▄ п╡п╦п╢п╣п╬п©п╬я┌п╬п╨п╬п╡
+Summary(uk.UTF-8):   п÷п╣я─п╣пЁп╩я▐п╢ я┌п╟ п╥п╟п©п╦я│ п╡я√п╢п╣п╬п©п╬я┌п╬п╨я√п╡
 Name:		xawtv
 Version:	3.94
 Release:	3
@@ -54,59 +54,59 @@ A collection tools for video4linux:
 - streamer - capture tool (images / movies)
 - v4lctl - command line tool to control v4l devices
 
-%description -l pl
-Kolekcja narzЙdzi video dla Linuksa
+%description -l pl.UTF-8
+Kolekcja narzд≥dzi video dla Linuksa
 - xawtv - X11 aplikacje TV
-- fbtv - aplikacje TV pod konsolЙ
-- streamer - narzЙdzie do przechwytywanie obrazu (zdjЙcia / filmy)
-- v4lctl - narzЙdzie do kontroli urz╠dzeЯ v4l
+- fbtv - aplikacje TV pod konsolд≥
+- streamer - narzд≥dzie do przechwytywanie obrazu (zdjд≥cia / filmy)
+- v4lctl - narzд≥dzie do kontroli urzд┘dzeе└ v4l
 
-%description -l pt_BR
-Uma coleГЦo de ferramentas para o video4linux:
-- xawtv - VisualizaГЦo de filmes (fluxos de imagens) para o X
-- fbtv - VersЦo do xawtv para console com framebuffer
+%description -l pt_BR.UTF-8
+Uma coleц╖цёo de ferramentas para o video4linux:
+- xawtv - Visualizaц╖цёo de filmes (fluxos de imagens) para o X
+- fbtv - Versцёo do xawtv para console com framebuffer
 - streamer - ferramenta e captura (imagens / filmes)
 - v4lctl - ferramenta de linha de comando para controlar dispositivos
   v4l
 
-%description -l ru
-Набор инструментов для работы с видеопотоками по протоколу
+%description -l ru.UTF-8
+п²п╟п╠п╬я─ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ п╡п╦п╢п╣п╬п©п╬я┌п╬п╨п╟п╪п╦ п©п╬ п©я─п╬я┌п╬п╨п╬п╩я┐
 video4linux:
-- xawtv - интерфейс под X11
-- fbtv - консольный интерфейс
-- streamer - инструмент для записи (изображение/фильм)
-- v4lctl - инструмент командной строки для управления v4l устройствами
+- xawtv - п╦п╫я┌п╣я─я└п╣п╧я│ п©п╬п╢ X11
+- fbtv - п╨п╬п╫я│п╬п╩я▄п╫я▀п╧ п╦п╫я┌п╣я─я└п╣п╧я│
+- streamer - п╦п╫я│я┌я─я┐п╪п╣п╫я┌ п╢п╩я▐ п╥п╟п©п╦я│п╦ (п╦п╥п╬п╠я─п╟п╤п╣п╫п╦п╣/я└п╦п╩я▄п╪)
+- v4lctl - п╦п╫я│я┌я─я┐п╪п╣п╫я┌ п╨п╬п╪п╟п╫п╢п╫п╬п╧ я│я┌я─п╬п╨п╦ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ v4l я┐я│я┌я─п╬п╧я│я┌п╡п╟п╪п╦
 
-Включает также основанную на ncurses программу работы с радио.
+п▓п╨п╩я▌я┤п╟п╣я┌ я┌п╟п╨п╤п╣ п╬я│п╫п╬п╡п╟п╫п╫я┐я▌ п╫п╟ ncurses п©я─п╬пЁя─п╟п╪п╪я┐ я─п╟п╠п╬я┌я▀ я│ я─п╟п╢п╦п╬.
 
-%description -l uk
-Наб╕р ╕нструмент╕в для роботи з в╕деопотоками по протоколу
+%description -l uk.UTF-8
+п²п╟п╠я√я─ я√п╫я│я┌я─я┐п╪п╣п╫я┌я√п╡ п╢п╩я▐ я─п╬п╠п╬я┌п╦ п╥ п╡я√п╢п╣п╬п©п╬я┌п╬п╨п╟п╪п╦ п©п╬ п©я─п╬я┌п╬п╨п╬п╩я┐
 video4linux:
-- xawtv - ╕нтерфейс п╕д X11
-- fbtv - консольний ╕нтерфейс
-- streamer - ╕нструмент для запису (зображення/ф╕льм)
-- v4lctl - ╕нструмент командного рядка для управл╕ння v4l пристроями
+- xawtv - я√п╫я┌п╣я─я└п╣п╧я│ п©я√п╢ X11
+- fbtv - п╨п╬п╫я│п╬п╩я▄п╫п╦п╧ я√п╫я┌п╣я─я└п╣п╧я│
+- streamer - я√п╫я│я┌я─я┐п╪п╣п╫я┌ п╢п╩я▐ п╥п╟п©п╦я│я┐ (п╥п╬п╠я─п╟п╤п╣п╫п╫я▐/я└я√п╩я▄п╪)
+- v4lctl - я√п╫я│я┌я─я┐п╪п╣п╫я┌ п╨п╬п╪п╟п╫п╢п╫п╬пЁп╬ я─я▐п╢п╨п╟ п╢п╩я▐ я┐п©я─п╟п╡п╩я√п╫п╫я▐ v4l п©я─п╦я│я┌я─п╬я▐п╪п╦
 
-Включа╓ також основану на ncurses програму роботи з рад╕о.
+п▓п╨п╩я▌я┤п╟я■ я┌п╟п╨п╬п╤ п╬я│п╫п╬п╡п╟п╫я┐ п╫п╟ ncurses п©я─п╬пЁя─п╟п╪я┐ я─п╬п╠п╬я┌п╦ п╥ я─п╟п╢я√п╬.
 
 %package radio
 Summary:	radio
-Summary(es):	xawtv: radio
-Summary(pl):	radio
-Summary(pt_BR):	Suporte a rАdio no xawtv
+Summary(es.UTF-8):   xawtv: radio
+Summary(pl.UTF-8):   radio
+Summary(pt_BR.UTF-8):   Suporte a rц║dio no xawtv
 Group:		Applications/Sound
 
 %description radio
 This is a ncurses-based radio application.
 
-%description radio -l pl
-Aplikacje radiowe bazuj╠ce na ncurses.
+%description radio -l pl.UTF-8
+Aplikacje radiowe bazujд┘ce na ncurses.
 
 %package misc
 Summary:	Misc utils related (or not) to xawtv
-Summary(es):	xawtv: misc
-Summary(pl):	RС©ne narzЙdzia pomocnicze do xawtv
-Summary(pt_BR):	Ferramentas adicionais do xawtv
+Summary(es.UTF-8):   xawtv: misc
+Summary(pl.UTF-8):   RцЁе╪ne narzд≥dzia pomocnicze do xawtv
+Summary(pt_BR.UTF-8):   Ferramentas adicionais do xawtv
 Group:		X11/Applications
 
 %description misc
@@ -119,47 +119,47 @@ do very much to do with xawtv. I've used/wrote them for debugging:
   which might be useful to trouble shoot sound problems.
 - showriff - display the structure of RIFF files (avi, WAV).
 
-%description misc -l pl
-Ten pakiet zawiera sporo u©ytecznych narzЙdzi. Nie maj╠ wiele
-wspСlnego z xawtv. ZostaЁy napisane w celu debagowania xawtv.
-- propwatch - monitor ustawieЯ
+%description misc -l pl.UTF-8
+Ten pakiet zawiera sporo uе╪ytecznych narzд≥dzi. Nie majд┘ wiele
+wspцЁlnego z xawtv. Zostaе┌y napisane w celu debagowania xawtv.
+- propwatch - monitor ustawieе└
 - dump-mixers - "Dump" mixer
-- record - Rejestrator d╪wiЙku.
-- showriff - Wy╤wietla strukturЙ plikСw RIFF (avi, WAV).
+- record - Rejestrator dе╨wiд≥ku.
+- showriff - Wyе⌡wietla strukturд≥ plikцЁw RIFF (avi, WAV).
 
-%description misc -l pt_BR
-Ferramentas adicionais para depuraГЦo dos componentes do pacote xawtv:
-- propwatch - monitora as propriedades de janelas X11. Se vocЙ quiser
+%description misc -l pt_BR.UTF-8
+Ferramentas adicionais para depuraц╖цёo dos componentes do pacote xawtv:
+- propwatch - monitora as propriedades de janelas X11. Se vocц╙ quiser
   saber como monitorar a propriedade _XAWTV_STATION use esta ferramenta.
-- dump-mixers - apresenta as configuraГУes do misturador na saМda
-  padrЦo.
-- record - gravador de som para o console. Tem um medidor de nМvel de
-  entrada que deve ser Зtil para auxiliar na resoluГЦo de problemas de
+- dump-mixers - apresenta as configuraц╖ц╣es do misturador na saц╜da
+  padrцёo.
+- record - gravador de som para o console. Tem um medidor de nц╜vel de
+  entrada que deve ser ц╨til para auxiliar na resoluц╖цёo de problemas de
   som.
 - showriff - mostra a estrutura de arquivos RIFF (avi, WAV).
 
 %package alevtd
 Summary:	HTTP daemon for alevt teletext decoder
-Summary(pl):	Daemon HTTP dla dekodera teletekstu alevt
+Summary(pl.UTF-8):   Daemon HTTP dla dekodera teletekstu alevt
 Group:		Daemons
 Requires:	alevt
 
 %description alevtd
 HTTP daemon for alevt teletext decoder
 
-%description alevtd -l pl
+%description alevtd -l pl.UTF-8
 Daemon HTTP dla dekodera teletekstu alevt
 
 %package ttv
 Summary:	ASCII Art TV viewer
-Summary(pl):	Tekstowy program do ogl╠dania TV
+Summary(pl.UTF-8):   Tekstowy program do oglд┘dania TV
 Group:		X11/Applications
 
 %description ttv
 TV tuner program using ASCII characters to display picture.
 
-%description ttv -l pl
-Program do obsЁugi tunera TV wy╤wietlaj╠cy obraz przy u©yciu znakСw
+%description ttv -l pl.UTF-8
+Program do obsе┌ugi tunera TV wyе⌡wietlajд┘cy obraz przy uе╪yciu znakцЁw
 ASCII.
 
 %prep
