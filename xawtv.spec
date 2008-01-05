@@ -10,7 +10,7 @@ Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
 Version:	3.95
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
@@ -32,6 +32,7 @@ URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
 %{?with_aalib:BuildRequires:	aalib-devel}
 BuildRequires:	alsa-lib-devel
+BuildRequires:	autoconf
 BuildRequires:	libjpeg-devel
 %{?with_lirc:BuildRequires:	lirc-devel}
 BuildRequires:	ncurses-devel >= 5.1
@@ -49,7 +50,7 @@ BuildRequires:	zvbi-devel
 Requires(post,postun):	fontpostinst
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_appdefsdir	/usr/X11R6/lib/X11/app-defaults
+%define		_appdefsdir	%{_datadir}/X11/app-defaults
 %define 	font_dir 	tv-fonts-1.1
 
 %description
@@ -178,6 +179,7 @@ ASCII.
 %patch6 -p1
 
 %build
+%{__autoconf}
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses -I/usr/include/X11/fonts"; export CFLAGS
 # MMX support in linear-blend plugin is chosen at compile time - athlon/p3/p4 only
 %configure \
