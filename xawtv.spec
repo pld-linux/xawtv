@@ -1,3 +1,5 @@
+# TODO:
+#	unpackaged: /usr/share/X11/de_DE.UTF-8/app-defaults/MoTV
 #
 # Conditional build:
 %bcond_without	aalib	# compile without aalib support
@@ -10,7 +12,7 @@ Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
 Version:	3.95
-Release:	0.2
+Release:	0.3
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
@@ -201,13 +203,13 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses -I/usr/include/X11/fonts"; export CF
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_desktopdir},%{_fontsdir}/misc} \
-	$RPM_BUILD_ROOT%{_appdefsdir}/pl
+	$RPM_BUILD_ROOT%{_datadir}/X11/pl/app-defaults
 
 %{__make} install \
 	DESTDIR="$RPM_BUILD_ROOT" \
 	SUID_ROOT=""
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_appdefsdir}/pl/Xawtv
+install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/X11/pl/app-defaults/Xawtv
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE4} .
@@ -245,12 +247,10 @@ fontpostinst misc
 %{_appdefsdir}/Xawtv
 %{_appdefsdir}/MoTV
 %{_appdefsdir}/mtt
-%lang(pl) %{_appdefsdir}/pl/Xawtv
-%lang(de) %{_appdefsdir}/de/MoTV
-%lang(fr) %{_appdefsdir}/fr/MoTV
-# XXX: missing dirs (to be added to XFree86-libs)
-%lang(de) %{_appdefsdir}/de_DE.UTF-8/MoTV
-%lang(it) %{_appdefsdir}/it/MoTV
+%lang(pl) %{_datadir}/X11/pl/app-defaults/Xawtv
+%lang(de) %{_datadir}/X11/de/app-defaults/MoTV
+%lang(fr) %{_datadir}/X11/fr/app-defaults/MoTV
+%lang(it) %{_datadir}/X11/it/app-defaults/MoTV
 
 %{_desktopdir}/*.desktop
 
