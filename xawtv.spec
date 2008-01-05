@@ -40,6 +40,11 @@ BuildRequires:	xorg-app-bdftopcf
 BuildRequires:	xorg-app-mkfontdir
 BuildRequires:	xorg-lib-libFS-devel
 BuildRequires:	xorg-lib-libXaw-devel
+BuildRequires:	xorg-lib-libXinerama-devel
+BuildRequires:	xorg-lib-libXrandr-devel
+BuildRequires:	xorg-lib-libXv-devel
+BuildRequires:	xorg-lib-libXxf86dga-devel
+BuildRequires:	xorg-lib-libXxf86vm-devel
 BuildRequires:	zvbi-devel
 Requires(post,postun):	fontpostinst
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
