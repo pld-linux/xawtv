@@ -8,3 +8,14 @@
 -	$(INSTALL_DATA) x11/MoTV.$*.ad $(resdir)/$*/app-defaults/MoTV
 +	$(INSTALL_DIR) $(resdir)/app-defaults/$*
 +	$(INSTALL_DATA) x11/MoTV.$*.ad $(resdir)/app-defaults/$*/MoTV
+--- xawtv-3.95/configure.ac.orig	2008-01-05 17:09:00.295218576 +0100
++++ xawtv-3.95/configure.ac	2008-01-05 17:09:16.292778046 +0100
+@@ -295,7 +295,7 @@
+ AC_SUBST(x11conf)
+ 
+ AC_MSG_CHECKING(for X11 app-defaults directory)
+-resdir=/usr/X11R6/lib/X11
++resdir=/usr/share/X11
+ if test -d /etc/X11/app-defaults; then
+ 	resdir=/etc/X11
+ fi
