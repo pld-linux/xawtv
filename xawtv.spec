@@ -9,12 +9,12 @@ Summary(pt_BR.UTF-8):	Visualizador de fluxos de imagens obtidas através do Vide
 Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
-Version:	3.94
-Release:	3
+Version:	3.95
+Release:	0.1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
-# Source0-md5:	df768711930605918106c1477327d348
+# Source0-md5:	ad25e03f7e128b318e392cb09f52207d
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
@@ -30,16 +30,16 @@ Patch5:		%{name}-path-fix.patch
 Patch6:		%{name}-gcc4.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
-BuildRequires:	XFree86
-BuildRequires:	XFree86-devel
-BuildRequires:	Xaw3d-devel >= 1.5
 %{?with_aalib:BuildRequires:	aalib-devel}
 BuildRequires:	alsa-lib-devel
 BuildRequires:	libjpeg-devel
 %{?with_lirc:BuildRequires:	lirc-devel}
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	openmotif-devel
-BuildRequires:	xft-devel
+BuildRequires:	xorg-app-bdftopcf
+BuildRequires:	xorg-app-mkfontdir
+BuildRequires:	xorg-lib-libFS-devel
+BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	zvbi-devel
 Requires(post,postun):	fontpostinst
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -173,7 +173,7 @@ ASCII.
 %patch6 -p1
 
 %build
-CFLAGS="%{rpmcflags} -I/usr/include/ncurses"; export CFLAGS
+CFLAGS="%{rpmcflags} -I/usr/include/ncurses -I/usr/include/X11/fonts"; export CFLAGS
 # MMX support in linear-blend plugin is chosen at compile time - athlon/p3/p4 only
 %configure \
 	%{!?with_aalib:--disable-aalib} \
