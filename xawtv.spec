@@ -48,6 +48,7 @@ BuildRequires:	xorg-lib-libXxf86dga-devel
 BuildRequires:	xorg-lib-libXxf86vm-devel
 BuildRequires:	zvbi-devel
 Requires(post,postun):	fontpostinst
+Requires:	xorg-lib-libXt >= 1.0.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_appdefsdir	%{_datadir}/X11/app-defaults
