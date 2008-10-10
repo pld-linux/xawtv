@@ -189,6 +189,16 @@ applications:
   installed.
 - ets-caption: A font for closed captions.
 
+%description -n fonts-misc-xawtv -l pl.UTF-8
+Ten pakiet zawiera zestaw fontów przydatnych dla aplikacji
+telewizyjnych:
+- led-fixed - duży font, używany domyślnie przez xawtv do wyświetlania
+  napisów na ekranie (OSD) w trybie pełnoekranowym
+- ets-teletext - font dla telegazety; zawiera znaki grafiki blokowej
+  używane na stronach telegazety. Oglądając telegazetę w przeglądarce
+  mtt można uzyskać dużo lepsze efekty mając zainstalowane te fonty.
+- ets-caption - font do napisów.
+
 %prep
 %setup -q -a 5
 %patch0 -p1
