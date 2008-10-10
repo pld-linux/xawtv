@@ -12,7 +12,7 @@ Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
 Version:	3.95
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
@@ -51,7 +51,6 @@ BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	xorg-lib-libXxf86dga-devel
 BuildRequires:	xorg-lib-libXxf86vm-devel
 BuildRequires:	zvbi-devel
-Requires(post,postun):	fontpostinst
 Requires:	xorg-lib-libXt >= 1.0.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -173,6 +172,23 @@ TV tuner program using ASCII characters to display picture.
 Program do obsługi tunera TV wyświetlający obraz przy użyciu znaków
 ASCII.
 
+%package -n fonts-misc-xawtv
+Summary:	TV fonts
+Summary(pl.UTF-8):	Fonty TV
+Group:		Fonts
+Requires(post,postun):	fontpostinst
+
+%description -n fonts-misc-xawtv
+This package contains a number of fonts which are useful for TV
+applications:
+- led-fixed: This is the big font which xawtv uses by default for the
+  onscreen display in fullscreen mode.
+- ets-teletext: This is a teletext font. It contains the block graphic
+  characters used by teletext pages. When watching teletext with the mtt
+  teletext browser you'll get much better results with these fonts
+  installed.
+- ets-caption: A font for closed captions.
+
 %prep
 %setup -q -a 5
 %patch0 -p1
@@ -222,10 +238,10 @@ install %{font_dir}/*.gz $RPM_BUILD_ROOT%{_fontsdir}/misc
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
+%post -n fonts-misc-xawtv
 fontpostinst misc
 
-%postun
+%postun -n fonts-misc-xawtv
 fontpostinst misc
 
 %files
@@ -258,7 +274,6 @@ fontpostinst misc
 %{_desktopdir}/*.desktop
 
 %{_datadir}/%{name}
-%{_fontsdir}/misc/*
 
 %{_mandir}/man1/fbtv.1*
 %{_mandir}/man1/v4l-info.1*
@@ -318,3 +333,7 @@ fontpostinst misc
 %{_mandir}/man1/ttv.1*
 %lang(es) %{_mandir}/es/man1/ttv.1*
 %endif
+
+%files -n fonts-misc-xawtv
+%defattr(644,root,root,755)
+%{_fontsdir}/misc/*
