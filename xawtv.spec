@@ -226,7 +226,7 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses -I/usr/include/X11/fonts"; export CF
 %endif
 %{__make}
 
-%{__make} -C %{font_dir}
+%{__make} -j1 -C %{font_dir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
