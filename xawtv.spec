@@ -12,7 +12,7 @@ Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
 Version:	3.95
-Release:	8
+Release:	9
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
