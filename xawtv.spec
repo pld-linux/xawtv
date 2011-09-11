@@ -12,7 +12,7 @@ Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
 Version:	3.95
-Release:	9
+Release:	10
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
@@ -31,6 +31,7 @@ Patch4:		%{name}-appdefsdir.patch
 Patch5:		%{name}-path-fix.patch
 Patch6:		%{name}-gcc4.patch
 Patch7:		%{name}-pagesize.patch
+Patch8:		%{name}-fontconfig.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
 %{?with_aalib:BuildRequires:	aalib-devel}
@@ -209,6 +210,7 @@ telewizyjnych:
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 %{__autoconf}

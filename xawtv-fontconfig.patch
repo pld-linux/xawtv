@@ -1,0 +1,17 @@
+--- xawtv-3.95.org/x11/Subdir.mk	2005-01-05 11:25:03.000000000 +0100
++++ xawtv-3.95/x11/Subdir.mk	2011-09-11 21:12:38.792312036 +0200
+@@ -98,11 +98,11 @@
+ # libraries to link
+ x11/xawtv        : LDLIBS  += \
+ 	$(THREAD_LIBS) $(CURSES_LIBS) $(LIRC_LIBS) $(ALSA_LIBS) \
+-	$(ATHENA_LIBS) $(VBI_LIBS) $(GL_LIBS) -ljpeg -lm
++	$(ATHENA_LIBS) $(VBI_LIBS) $(GL_LIBS) -ljpeg -lm -lfontconfig
+ x11/motv         : LDLIBS  += \
+ 	$(THREAD_LIBS) $(CURSES_LIBS) $(LIRC_LIBS) $(ALSA_LIBS) \
+-	$(MOTIF_LIBS) $(VBI_LIBS) $(GL_LIBS) -ljpeg -lm
+-x11/mtt          : LDLIBS  += $(THREAD_LIBS) $(MOTIF_LIBS) $(VBI_LIBS) -ljpeg
++	$(MOTIF_LIBS) $(VBI_LIBS) $(GL_LIBS) -ljpeg -lm -lfontconfig
++x11/mtt          : LDLIBS  += $(THREAD_LIBS) $(MOTIF_LIBS) $(VBI_LIBS) -ljpeg -lfontconfig
+ x11/v4lctl       : LDLIBS  += $(THREAD_LIBS) $(ATHENA_LIBS) -ljpeg -lm
+ x11/pia          : LDLIBS  += $(ATHENA_LIBS) $(GL_LIBS) -ljpeg -lm
+ x11/rootv        : LDLIBS  += $(ATHENA_LIBS)
