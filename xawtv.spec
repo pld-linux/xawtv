@@ -41,7 +41,7 @@ BuildRequires:	iconv
 BuildRequires:	libjpeg-devel
 %{?with_lirc:BuildRequires:	lirc-devel}
 BuildRequires:	ncurses-devel >= 5.1
-BuildRequires:	openmotif-devel
+BuildRequires:	motif-devel
 BuildRequires:	xorg-app-bdftopcf
 BuildRequires:	xorg-app-mkfontdir
 BuildRequires:	xorg-lib-libFS-devel
