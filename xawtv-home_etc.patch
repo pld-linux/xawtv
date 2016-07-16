@@ -10,7 +10,7 @@ diff -Nuard xawtv-3.81.orig/common/channel.c xawtv-3.81/common/channel.c
 +    
 +	/* CONFIG_DIR patch */
 +	if (getenv("CONFIG_DIR"))
-+	    sprintf(filename,"%.*s/%s/%s",(int)sizeof(filename)-8,getenv("HOME"),getenv("CONFIG_DIR"),"xawtv");
++	    sprintf(filename,"%.*s/%.16s/%s",(int)sizeof(filename)-24,getenv("HOME"),getenv("CONFIG_DIR"),"xawtv");
 +	else
 +	    sprintf(filename,"%.*s/%s",(int)sizeof(filename)-8,getenv("HOME"),".xawtv");
 +		
@@ -37,23 +37,18 @@ diff -Nuard xawtv-3.81.orig/common/channel.c xawtv-3.81/common/channel.c
  
      /* delete old backup */
      unlink(filename2);
-diff -Nuard xawtv-3.81.orig/console/radio.c xawtv-3.81/console/radio.c
---- xawtv-3.81.orig/console/radio.c	Fri Dec  6 11:58:06 2002
-+++ xawtv-3.81/console/radio.c	Sat Dec 21 19:09:18 2002
-@@ -167,7 +167,12 @@
+--- xawtv-3.103/console/radio.c.orig	2016-07-06 21:14:56.685762659 +0200
++++ xawtv-3.103/console/radio.c	2016-07-06 21:22:24.230004771 +0200
+@@ -363,6 +363,9 @@
  
-     sprintf(file,"%.225s/.kde/share/config/kradiorc",getenv("HOME"));
+     sprintf(file, "%.225s/.kde/share/config/kradiorc", getenv("HOME"));
      if (NULL == (fp = fopen(file,"r"))) {
--	sprintf(file,"%.225s/.radio",getenv("HOME"));
-+    
 +	if (getenv("CONFIG_DIR"))
-+	    sprintf(file,"%.225s/%s/radio",getenv("HOME"),getenv("CONFIG_DIR"));
++	    sprintf(file,"%.225s/%.16s/radio",getenv("HOME"),getenv("CONFIG_DIR"));
 +	else
-+	    sprintf(file,"%.225s/.radio",getenv("HOME"));
-+	    
+ 	sprintf(file, "%.225s/.radio", getenv("HOME"));
  	if (NULL == (fp = fopen(file,"r")))
  	    return;
-     }
 diff -Nuard xawtv-3.81.orig/console/webcam.c xawtv-3.81/console/webcam.c
 --- xawtv-3.81.orig/console/webcam.c	Mon Dec  9 17:00:39 2002
 +++ xawtv-3.81/console/webcam.c	Sat Dec 21 19:10:23 2002
@@ -71,20 +66,27 @@ diff -Nuard xawtv-3.81.orig/console/webcam.c xawtv-3.81/console/webcam.c
      }
      fprintf(stderr,"reading config file: %s\n",filename);
      cfg_parse_file(filename);
-diff -Nuard xawtv-3.81.orig/x11/rootv.c xawtv-3.81/x11/rootv.c
---- xawtv-3.81.orig/x11/rootv.c	Thu Nov 14 11:45:53 2002
-+++ xawtv-3.81/x11/rootv.c	Sat Dec 21 19:11:10 2002
-@@ -86,8 +86,11 @@
-     char filename[100];
-     char **list;
-     
--    sprintf(filename,"%.*s/%s",(int)sizeof(filename)-8,
--	    getenv("HOME"),".xawtv");
-+    if (getenv("CONFIG_DIR"))
-+	sprintf(filename,"%.*s/%s/%s",(int)sizeof(filename)-8,getenv("HOME"),getenv("CONFIG_DIR"),"xawtv");
-+    else
-+	sprintf(filename,"%.*s/%s",(int)sizeof(filename)-8,getenv("HOME"),".xawtv");
-+	    
-     cfg_parse_file(CONFIGFILE);
-     cfg_parse_file(filename);
+--- xawtv-3.103/x11/rootv.c.orig	2016-07-06 21:14:56.689095974 +0200
++++ xawtv-3.103/x11/rootv.c	2016-07-06 21:26:36.498638113 +0200
+@@ -9,6 +9,7 @@
+  * put a TV image to the root window - requires Xvideo
+  */
  
++#include <limits.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+@@ -85,9 +86,12 @@
+ 
+ static void station_list(FILE *fp)
+ {
+-    char filename[100];
++    char filename[PATH_MAX];
+     char **list;
+ 
++    if (getenv("CONFIG_DIR"))
++	sprintf(filename,"%.*s/%.16s/%s",(int)sizeof(filename)-24,getenv("HOME"),getenv("CONFIG_DIR"),"xawtv");
++    else
+     sprintf(filename,"%.*s/%s",(int)sizeof(filename)-8,
+ 	    getenv("HOME"),".xawtv");
+     cfg_parse_file(CONFIGFILE);

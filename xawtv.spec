@@ -1,22 +1,24 @@
-# TODO:
-#	unpackaged: /usr/share/X11/de_DE.UTF-8/app-defaults/MoTV
 #
 # Conditional build:
 %bcond_without	aalib	# compile without aalib support
 %bcond_without	lirc	# compile without lirc remote control support
+%bcond_with	mmx	# MMX support (if enabled, linear-plugin won't work on non-MMX CPU)
 #
+%ifarch %{x8664} pentium3 pentium4 athlon
+%define	with_mmx	1
+%endif
 Summary:	Video4Linux Stream Capture Viewer
 Summary(pl.UTF-8):	Aplikacje video dla Linuksa
 Summary(pt_BR.UTF-8):	Visualizador de fluxos de imagens obtidas através do Video4Linux
 Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
-Version:	3.95
-Release:	16
+Version:	3.103
+Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://dl.bytesex.org/releases/xawtv/%{name}-%{version}.tar.gz
-# Source0-md5:	ad25e03f7e128b318e392cb09f52207d
+Source0:	https://linuxtv.org/downloads/xawtv/%{name}-%{version}.tar.bz2
+# Source0-md5:	18822bb3660540fa9ea8b643a5b30d6b
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
@@ -27,27 +29,36 @@ Patch0:		%{name}-home_etc.patch
 Patch1:		%{name}-channels_list-cable_poland_PTK.patch
 Patch2:		%{name}-fullscreen.patch
 Patch3:		%{name}-libng_fix.patch
-Patch4:		%{name}-appdefsdir.patch
-Patch5:		%{name}-path-fix.patch
-Patch6:		%{name}-gcc4.patch
-Patch7:		%{name}-pagesize.patch
+Patch4:		%{name}-path-fix.patch
 Patch8:		%{name}-fontconfig.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
 %{?with_aalib:BuildRequires:	aalib-devel}
 BuildRequires:	alsa-lib-devel
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.50
+BuildRequires:	fontconfig-devel
 BuildRequires:	iconv
+BuildRequires:	libdv-devel
 BuildRequires:	libjpeg-devel
+BuildRequires:	libpng-devel
+BuildRequires:	libv4l-devel
 %{?with_lirc:BuildRequires:	lirc-devel}
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	motif-devel
+BuildRequires:	pkgconfig
 BuildRequires:	xorg-app-bdftopcf
 BuildRequires:	xorg-app-mkfontdir
 BuildRequires:	xorg-lib-libFS-devel
+BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXaw-devel
+BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXft-devel
 BuildRequires:	xorg-lib-libXinerama-devel
+BuildRequires:	xorg-lib-libXmu-devel
+BuildRequires:	xorg-lib-libXpm-devel
 BuildRequires:	xorg-lib-libXrandr-devel
+BuildRequires:	xorg-lib-libXrender-devel
+BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	xorg-lib-libXxf86dga-devel
 BuildRequires:	xorg-lib-libXxf86vm-devel
@@ -207,32 +218,27 @@ telewizyjnych:
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
 
 %build
 %{__autoconf}
-CFLAGS="%{rpmcflags} -I/usr/include/ncurses -I/usr/include/X11/fonts"; export CFLAGS
-# MMX support in linear-blend plugin is chosen at compile time - athlon/p3/p4 only
+CFLAGS="%{rpmcflags} -I/usr/include/ncurses"
+# -I/usr/include/X11/fonts"
 %configure \
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_lirc:--disable-lirc} \
+	--enable-mmx%{!?with_mmx:=no} \
 	--enable-motif \
 	--disable-quicktime \
+	--disable-silent-rules \
 	--enable-xfree-ext \
-	--enable-xvideo \
-%ifnarch athlon pentium3 pentium4
-	--disable-mmx
-%endif
-%{__make}
+	--enable-xvideo
+%{__make} \
+	verbose=yes
 
 %{__make} -j1 -C %{font_dir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_desktopdir},%{_fontsdir}/misc} \
 	$RPM_BUILD_ROOT%{_datadir}/X11/pl/app-defaults
 
@@ -240,12 +246,16 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_desktopdir},%{_fontsdir}/misc} \
 	DESTDIR="$RPM_BUILD_ROOT" \
 	SUID_ROOT=""
 
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/X11/{de_DE.UTF-8,de}
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/X11/{fr_FR.UTF-8,fr}
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/X11/{it_IT.UTF-8,it}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/X11/pl/app-defaults/Xawtv
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE4} .
 
-install %{font_dir}/*.gz $RPM_BUILD_ROOT%{_fontsdir}/misc
+cp -p %{font_dir}/*.pcf.gz $RPM_BUILD_ROOT%{_fontsdir}/misc
+cp -p %{font_dir}/fonts.alias $RPM_BUILD_ROOT%{_fontsdir}/misc/fonts.alias.xawtv
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -283,7 +293,8 @@ fontpostinst misc
 %lang(fr) %{_datadir}/X11/fr/app-defaults/MoTV
 %lang(it) %{_datadir}/X11/it/app-defaults/MoTV
 
-%{_desktopdir}/*.desktop
+%{_desktopdir}/xawtv.desktop
+%{_desktopdir}/xawtv-noxv.desktop
 
 %{_datadir}/%{name}
 
@@ -348,4 +359,10 @@ fontpostinst misc
 
 %files -n fonts-misc-xawtv
 %defattr(644,root,root,755)
-%{_fontsdir}/misc/*
+%{_fontsdir}/misc/caption.pcf.gz
+%{_fontsdir}/misc/captioni.pcf.gz
+%{_fontsdir}/misc/led-iso8859-*.pcf.gz
+%{_fontsdir}/misc/led-iso10646-1.pcf.gz
+%{_fontsdir}/misc/led-koi8-r.pcf.gz
+%{_fontsdir}/misc/teletext*.pcf.gz
+%{_fontsdir}/misc/fonts.alias.xawtv

@@ -1,6 +1,6 @@
---- xawtv-3.85/x11/wmhooks.c.orig	Sun Mar  2 22:27:12 2003
-+++ xawtv-3.85/x11/wmhooks.c	Sun Mar  2 22:34:54 2003
-@@ -131,13 +131,14 @@
+--- xawtv-3.103/x11/wmhooks.c.orig	2013-04-02 15:19:10.000000000 +0200
++++ xawtv-3.103/x11/wmhooks.c	2016-07-15 20:51:06.135118930 +0200
+@@ -131,12 +131,13 @@
      Window root = DefaultRootWindow(dpy);
  
      /* netwm checks */
@@ -8,18 +8,16 @@
 +    if (NULL == wm_fullscreen &&
  	0 == wm_check_capability(dpy,root,_NET_SUPPORTED,
 -				 _NET_WM_STATE_ABOVE)) {
-+					_NET_WM_STATE_FULLSCREEN)) {
++				 _NET_WM_STATE_FULLSCREEN)) {
  	if (debug)
 -	    fprintf(stderr,"wmhooks: netwm state above\n");
 -	wm_stay_on_top = netwm_stay_on_top;
--    } 
-+           fprintf(stderr,"wmhooks: netwm state fullscreen\n");
-+       wm_fullscreen = netwm_fullscreen;
-+       return 0;
-+    }
++	    fprintf(stderr,"wmhooks: netwm state fullscreen\n");
++	wm_fullscreen = netwm_fullscreen;
++	return 0;
+     }
      if (NULL == wm_stay_on_top &&
  	0 == wm_check_capability(dpy,root,_NET_SUPPORTED,
- 				 _NET_WM_STATE_STAYS_ON_TOP)) {
 @@ -145,12 +146,13 @@
  	    fprintf(stderr,"wmhooks: netwm state stays_on_top\n");
  	wm_stay_on_top = netwm_old_stay_on_top;
