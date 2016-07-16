@@ -30,7 +30,6 @@ Patch1:		%{name}-channels_list-cable_poland_PTK.patch
 Patch2:		%{name}-fullscreen.patch
 Patch3:		%{name}-libng_fix.patch
 Patch4:		%{name}-path-fix.patch
-Patch8:		%{name}-fontconfig.patch
 URL:		http://bytesex.org/xawtv/
 BuildRequires:	OpenGL-devel
 %{?with_aalib:BuildRequires:	aalib-devel}
