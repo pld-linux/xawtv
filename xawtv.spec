@@ -4,7 +4,8 @@
 %bcond_without	lirc	# compile without lirc remote control support
 %bcond_with	mmx	# MMX support (if enabled, linear-plugin won't work on non-MMX CPU)
 #
-%ifarch %{x8664} pentium3 pentium4 athlon
+# asm code has 32-bit addressing, so x86_64 ABI is not supported
+%ifarch pentium3 pentium4 athlon x32
 %define	with_mmx	1
 %endif
 Summary:	Video4Linux Stream Capture Viewer
@@ -47,7 +48,6 @@ BuildRequires:	motif-devel
 BuildRequires:	pkgconfig
 BuildRequires:	xorg-app-bdftopcf
 BuildRequires:	xorg-app-mkfontdir
-BuildRequires:	xorg-lib-libFS-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	xorg-lib-libXext-devel
