@@ -14,12 +14,12 @@ Summary(pt_BR.UTF-8):	Visualizador de fluxos de imagens obtidas através do Vide
 Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
-Version:	3.103
+Version:	3.105
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	https://linuxtv.org/downloads/xawtv/%{name}-%{version}.tar.bz2
-# Source0-md5:	18822bb3660540fa9ea8b643a5b30d6b
+# Source0-md5:	17ffe1cec52d12c37e55975613d85c1d
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
