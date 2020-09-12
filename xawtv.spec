@@ -14,12 +14,12 @@ Summary(pt_BR.UTF-8):	Visualizador de fluxos de imagens obtidas através do Vide
 Summary(ru.UTF-8):	Просмотр и запись видеопотоков
 Summary(uk.UTF-8):	Перегляд та запис відеопотоків
 Name:		xawtv
-Version:	3.106
+Version:	3.107
 Release:	1
-License:	GPL
+License:	GPL v2
 Group:		X11/Applications
 Source0:	https://linuxtv.org/downloads/xawtv/%{name}-%{version}.tar.bz2
-# Source0-md5:	1fd7c98fa8973f501d52449202c71ca7
+# Source0-md5:	3c9171aeeda7ca3eb2287f45ca7e86a9
 Source1:	Xawtv.ad-pl
 Source2:	%{name}.desktop
 Source3:	%{name}-noxv.desktop
@@ -31,7 +31,8 @@ Patch1:		%{name}-channels_list-cable_poland_PTK.patch
 Patch2:		%{name}-fullscreen.patch
 Patch3:		%{name}-libng_fix.patch
 Patch4:		%{name}-path-fix.patch
-URL:		http://bytesex.org/xawtv/
+Patch5:		%{name}-glibc.patch
+URL:		https://www.kraxel.org/blog/linux/xawtv/
 BuildRequires:	OpenGL-devel
 %{?with_aalib:BuildRequires:	aalib-devel}
 BuildRequires:	alsa-lib-devel
@@ -217,11 +218,11 @@ telewizyjnych:
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 %{__autoconf}
 CFLAGS="%{rpmcflags} -I/usr/include/ncurses"
-# -I/usr/include/X11/fonts"
 %configure \
 	%{!?with_aalib:--disable-aalib} \
 	%{!?with_lirc:--disable-lirc} \

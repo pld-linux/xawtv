@@ -1,0 +1,41 @@
+--- xawtv-3.107/console/record.c.orig	2020-05-16 01:32:25.000000000 +0200
++++ xawtv-3.107/console/record.c	2020-09-12 21:34:51.025822065 +0200
+@@ -429,7 +429,7 @@
+ {
+     if (verbose)
+ 	fprintf(stderr,"\n%s - exiting\n",
+-		sys_siglist[signal]);
++		strsignal(signal));
+     stop = 1;
+ }
+ 
+--- xawtv-3.107/console/fbtools.c.orig	2020-05-16 01:32:25.000000000 +0200
++++ xawtv-3.107/console/fbtools.c	2020-09-12 21:42:49.666562379 +0200
+@@ -520,6 +520,6 @@
+ 
+     /* cleanup */
+     fb_cleanup();
+-    fprintf(stderr,"Oops: %s\n",sys_siglist[termsig]);
++    fprintf(stderr,"Oops: %s\n",strsignal(termsig));
+     exit(42);
+ }
+--- xawtv-3.107/x11/rootv.c.orig	2020-09-12 21:39:10.401083576 +0200
++++ xawtv-3.107/x11/rootv.c	2020-09-12 21:43:49.016240854 +0200
+@@ -137,7 +137,7 @@
+     termsig = signal;
+     if (verbose)
+ 	fprintf(stderr,"received signal %d [%s]\n",
+-		termsig,sys_siglist[termsig]);
++		termsig,strsignal(termsig));
+ }
+ 
+ static void usage(FILE *fp)
+@@ -426,7 +426,7 @@
+     }
+     if (verbose && termsig)
+ 	fprintf(stderr,"exiting on signal %d [%s]\n",
+-		termsig,sys_siglist[termsig]);
++		termsig,strsignal(termsig));
+     if (do_mute && have_mute)
+ 	XvSetPortAttribute(dpy,port,XV_MUTE,1);
+     XvStopVideo(dpy,port,win);
